@@ -1,0 +1,876 @@
+2025-09-30 10:13:39,419:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2025-09-30 10:13:39,419:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2025-09-30 10:13:39,419:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2025-09-30 10:13:39,419:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2025-09-30 10:13:47,966:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\joblib\externals\loky\backend\context.py:136: UserWarning: Could not find the number of physical cores for the following reason:
+[WinError 2] El sistema no puede encontrar el archivo especificado
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+
+2025-09-30 10:13:49,825:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\svm\_classes.py:31: FutureWarning: The default value of `dual` will change from `True` to `'auto'` in 1.5. Set the value of `dual` explicitly to suppress the warning.
+  warnings.warn(
+
+2025-09-30 10:13:50,791:INFO:PyCaret ClassificationExperiment
+2025-09-30 10:13:50,791:INFO:Logging name: clf-default-name
+2025-09-30 10:13:50,791:INFO:ML Usecase: MLUsecase.CLASSIFICATION
+2025-09-30 10:13:50,791:INFO:version 3.3.2
+2025-09-30 10:13:50,791:INFO:Initializing setup()
+2025-09-30 10:13:50,791:INFO:self.USI: 2fe2
+2025-09-30 10:13:50,791:INFO:self._variable_keys: {'X_train', 'idx', 'exp_name_log', '_available_plots', 'y', 'gpu_param', 'html_param', 'fold_generator', 'logging_param', 'USI', 'gpu_n_jobs_param', 'fold_shuffle_param', 'y_train', 'pipeline', 'X', 'is_multiclass', 'data', 'n_jobs_param', 'X_test', 'fix_imbalance', 'log_plots_param', 'memory', 'target_param', '_ml_usecase', 'y_test', 'fold_groups_param', 'seed', 'exp_id'}
+2025-09-30 10:13:50,793:INFO:Checking environment
+2025-09-30 10:13:50,793:INFO:python_version: 3.11.9
+2025-09-30 10:13:50,793:INFO:python_build: ('tags/v3.11.9:de54cf5', 'Apr  2 2024 10:12:12')
+2025-09-30 10:13:50,793:INFO:machine: AMD64
+2025-09-30 10:13:50,793:INFO:platform: Windows-10-10.0.26100-SP0
+2025-09-30 10:13:50,798:INFO:Memory: svmem(total=16438312960, available=3934777344, percent=76.1, used=12503535616, free=3934777344)
+2025-09-30 10:13:50,798:INFO:Physical Core: 8
+2025-09-30 10:13:50,798:INFO:Logical Core: 16
+2025-09-30 10:13:50,798:INFO:Checking libraries
+2025-09-30 10:13:50,799:INFO:System:
+2025-09-30 10:13:50,799:INFO:    python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+2025-09-30 10:13:50,799:INFO:executable: C:\Users\senza\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\python.exe
+2025-09-30 10:13:50,799:INFO:   machine: Windows-10-10.0.26100-SP0
+2025-09-30 10:13:50,799:INFO:PyCaret required dependencies:
+2025-09-30 10:13:50,801:INFO:                 pip: 24.0
+2025-09-30 10:13:50,801:INFO:          setuptools: 65.5.0
+2025-09-30 10:13:50,801:INFO:             pycaret: 3.3.2
+2025-09-30 10:13:50,801:INFO:             IPython: 9.0.2
+2025-09-30 10:13:50,801:INFO:          ipywidgets: 8.1.7
+2025-09-30 10:13:50,801:INFO:                tqdm: 4.67.1
+2025-09-30 10:13:50,802:INFO:               numpy: 1.26.4
+2025-09-30 10:13:50,802:INFO:              pandas: 2.1.4
+2025-09-30 10:13:50,802:INFO:              jinja2: 3.1.6
+2025-09-30 10:13:50,802:INFO:               scipy: 1.11.4
+2025-09-30 10:13:50,802:INFO:              joblib: 1.3.2
+2025-09-30 10:13:50,802:INFO:             sklearn: 1.3.2
+2025-09-30 10:13:50,802:INFO:                pyod: 2.0.5
+2025-09-30 10:13:50,802:INFO:            imblearn: 0.14.0
+2025-09-30 10:13:50,802:INFO:   category_encoders: 2.7.0
+2025-09-30 10:13:50,802:INFO:            lightgbm: 4.0.0
+2025-09-30 10:13:50,802:INFO:               numba: 0.61.2
+2025-09-30 10:13:50,802:INFO:            requests: 2.32.3
+2025-09-30 10:13:50,802:INFO:          matplotlib: 3.7.5
+2025-09-30 10:13:50,802:INFO:          scikitplot: 0.3.7
+2025-09-30 10:13:50,802:INFO:         yellowbrick: 1.5
+2025-09-30 10:13:50,802:INFO:              plotly: 6.3.0
+2025-09-30 10:13:50,802:INFO:    plotly-resampler: Not installed
+2025-09-30 10:13:50,802:INFO:             kaleido: 1.1.0
+2025-09-30 10:13:50,802:INFO:           schemdraw: 0.15
+2025-09-30 10:13:50,802:INFO:         statsmodels: 0.14.5
+2025-09-30 10:13:50,802:INFO:              sktime: 0.26.0
+2025-09-30 10:13:50,802:INFO:               tbats: 1.1.3
+2025-09-30 10:13:50,802:INFO:            pmdarima: 2.0.4
+2025-09-30 10:13:50,802:INFO:              psutil: 7.0.0
+2025-09-30 10:13:50,802:INFO:          markupsafe: 3.0.2
+2025-09-30 10:13:50,802:INFO:             pickle5: Not installed
+2025-09-30 10:13:50,803:INFO:         cloudpickle: 3.1.1
+2025-09-30 10:13:50,803:INFO:         deprecation: 2.1.0
+2025-09-30 10:13:50,803:INFO:              xxhash: 3.5.0
+2025-09-30 10:13:50,803:INFO:           wurlitzer: Not installed
+2025-09-30 10:13:50,803:INFO:PyCaret optional dependencies:
+2025-09-30 10:13:50,818:INFO:                shap: Not installed
+2025-09-30 10:13:50,818:INFO:           interpret: Not installed
+2025-09-30 10:13:50,819:INFO:                umap: 0.5.5
+2025-09-30 10:13:50,819:INFO:     ydata_profiling: Not installed
+2025-09-30 10:13:50,819:INFO:  explainerdashboard: Not installed
+2025-09-30 10:13:50,819:INFO:             autoviz: Not installed
+2025-09-30 10:13:50,819:INFO:           fairlearn: Not installed
+2025-09-30 10:13:50,819:INFO:          deepchecks: Not installed
+2025-09-30 10:13:50,819:INFO:             xgboost: 1.7.6
+2025-09-30 10:13:50,819:INFO:            catboost: 1.2.5
+2025-09-30 10:13:50,819:INFO:              kmodes: Not installed
+2025-09-30 10:13:50,819:INFO:             mlxtend: Not installed
+2025-09-30 10:13:50,819:INFO:       statsforecast: Not installed
+2025-09-30 10:13:50,819:INFO:        tune_sklearn: Not installed
+2025-09-30 10:13:50,819:INFO:                 ray: Not installed
+2025-09-30 10:13:50,819:INFO:            hyperopt: Not installed
+2025-09-30 10:13:50,819:INFO:              optuna: Not installed
+2025-09-30 10:13:50,819:INFO:               skopt: Not installed
+2025-09-30 10:13:50,819:INFO:              mlflow: Not installed
+2025-09-30 10:13:50,819:INFO:              gradio: Not installed
+2025-09-30 10:13:50,819:INFO:             fastapi: Not installed
+2025-09-30 10:13:50,819:INFO:             uvicorn: Not installed
+2025-09-30 10:13:50,819:INFO:              m2cgen: Not installed
+2025-09-30 10:13:50,819:INFO:           evidently: Not installed
+2025-09-30 10:13:50,819:INFO:               fugue: Not installed
+2025-09-30 10:13:50,819:INFO:           streamlit: Not installed
+2025-09-30 10:13:50,819:INFO:             prophet: Not installed
+2025-09-30 10:13:50,819:INFO:None
+2025-09-30 10:13:50,819:INFO:Set up data.
+2025-09-30 10:13:50,838:INFO:Set up folding strategy.
+2025-09-30 10:13:50,838:INFO:Set up train/test split.
+2025-09-30 10:13:50,928:INFO:Set up index.
+2025-09-30 10:13:50,928:INFO:Assigning column types.
+2025-09-30 10:13:50,936:INFO:Engine successfully changes for model 'lr' to 'sklearn'.
+2025-09-30 10:13:50,971:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2025-09-30 10:13:50,984:INFO:Engine for model 'rbfsvm' has not been set explicitly, hence returning None.
+2025-09-30 10:13:51,064:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,066:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,134:INFO:Engine for model 'knn' has not been set explicitly, hence returning None.
+2025-09-30 10:13:51,135:INFO:Engine for model 'rbfsvm' has not been set explicitly, hence returning None.
+2025-09-30 10:13:51,164:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,166:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,166:INFO:Engine successfully changes for model 'knn' to 'sklearn'.
+2025-09-30 10:13:51,201:INFO:Engine for model 'rbfsvm' has not been set explicitly, hence returning None.
+2025-09-30 10:13:51,223:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,225:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,256:INFO:Engine for model 'rbfsvm' has not been set explicitly, hence returning None.
+2025-09-30 10:13:51,276:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,279:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,279:INFO:Engine successfully changes for model 'rbfsvm' to 'sklearn'.
+2025-09-30 10:13:51,330:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,332:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,383:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,385:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,388:INFO:Preparing preprocessing pipeline...
+2025-09-30 10:13:51,390:INFO:Set up label encoding.
+2025-09-30 10:13:51,390:INFO:Set up simple imputation.
+2025-09-30 10:13:51,396:INFO:Set up encoding of ordinal features.
+2025-09-30 10:13:51,398:INFO:Set up encoding of categorical features.
+2025-09-30 10:13:51,499:INFO:Finished creating preprocessing pipeline.
+2025-09-30 10:13:51,526:INFO:Pipeline: Pipeline(memory=FastMemory(location=C:\Users\senza\AppData\Local\Temp\joblib),
+         steps=[('label_encoding',
+                 TransformerWrapperWithInverse(exclude=None, include=None,
+                                               transformer=LabelEncoder())),
+                ('numerical_imputer',
+                 TransformerWrapper(exclude=None,
+                                    include=['Height', 'Weight', 'Age',
+                                             'Weak_foot', 'Skill_Moves',
+                                             'Ball_Control', 'Dribbling',
+                                             'Marking', 'Sliding_Tack...
+                                                              use_cat_names=True,
+                                                              verbose=0))),
+                ('rest_encoding',
+                 TransformerWrapper(exclude=None,
+                                    include=['Nationality',
+                                             'National_Position'],
+                                    transformer=TargetEncoder(cols=['Nationality',
+                                                                    'National_Position'],
+                                                              drop_invariant=False,
+                                                              handle_missing='return_nan',
+                                                              handle_unknown='value',
+                                                              hierarchy=None,
+                                                              min_samples_leaf=20,
+                                                              return_df=True,
+                                                              smoothing=10,
+                                                              verbose=0)))],
+         verbose=False)
+2025-09-30 10:13:51,526:INFO:Creating final display dataframe.
+2025-09-30 10:13:51,824:INFO:Setup _display_container:                     Description  \
+0                    Session id   
+1                        Target   
+2                   Target type   
+3                Target mapping   
+4           Original data shape   
+5        Transformed data shape   
+6   Transformed train set shape   
+7    Transformed test set shape   
+8               Ignore features   
+9              Numeric features   
+10         Categorical features   
+11                   Preprocess   
+12              Imputation type   
+13           Numeric imputation   
+14       Categorical imputation   
+15     Maximum one-hot encoding   
+16              Encoding method   
+17               Fold Generator   
+18                  Fold Number   
+19                     CPU Jobs   
+20                      Use GPU   
+21               Log Experiment   
+22              Experiment Name   
+23                          USI   
+
+                                                Value  
+0                                                  42  
+1                                               label  
+2                                          Multiclass  
+3   arquero: 0, ataque: 1, central: 2, central_ata...  
+4                                          (3939, 40)  
+5                                          (3939, 46)  
+6                                          (2757, 46)  
+7                                          (1182, 46)  
+8                                                   2  
+9                                                  33  
+10                                                  4  
+11                                               True  
+12                                             simple  
+13                                               mean  
+14                                               mode  
+15                                                 25  
+16                                               None  
+17                                    StratifiedKFold  
+18                                                  3  
+19                                                 -1  
+20                                              False  
+21                                              False  
+22                                   clf-default-name  
+23                                               2fe2  
+2025-09-30 10:13:51,876:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,878:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,929:INFO:Soft dependency imported: xgboost: 1.7.6
+2025-09-30 10:13:51,931:INFO:Soft dependency imported: catboost: 1.2.5
+2025-09-30 10:13:51,932:INFO:setup() successfully completed in 1.14s...............
+2025-09-30 10:13:51,932:INFO:Initializing compare_models()
+2025-09-30 10:13:51,932:INFO:compare_models(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, include=['et', 'rf', 'dt', 'xgboost', 'lightgbm', 'catboost'], exclude=None, fold=None, round=4, cross_validation=True, sort=Precision, n_select=1, budget_time=None, turbo=True, errors=ignore, fit_kwargs=None, groups=None, experiment_custom_tags=None, probability_threshold=None, verbose=True, parallel=None, caller_params={'self': <pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, 'include': ['et', 'rf', 'dt', 'xgboost', 'lightgbm', 'catboost'], 'exclude': None, 'fold': None, 'round': 4, 'cross_validation': True, 'sort': 'Precision', 'n_select': 1, 'budget_time': None, 'turbo': True, 'errors': 'ignore', 'fit_kwargs': None, 'groups': None, 'experiment_custom_tags': None, 'probability_threshold': None, 'engine': None, 'verbose': True, 'parallel': None, '__class__': <class 'pycaret.classification.oop.ClassificationExperiment'>})
+2025-09-30 10:13:51,932:INFO:Checking exceptions
+2025-09-30 10:13:51,937:INFO:Preparing display monitor
+2025-09-30 10:13:51,957:INFO:Initializing Extra Trees Classifier
+2025-09-30 10:13:51,957:INFO:Total runtime is 0.0 minutes
+2025-09-30 10:13:51,960:INFO:SubProcess create_model() called ==================================
+2025-09-30 10:13:51,960:INFO:Initializing create_model()
+2025-09-30 10:13:51,960:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=et, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=True, predict=True, fit_kwargs={}, groups=None, refit=False, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=<pycaret.internal.display.display.CommonDisplay object at 0x00000125A67D7050>, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:13:51,961:INFO:Checking exceptions
+2025-09-30 10:13:51,961:INFO:Importing libraries
+2025-09-30 10:13:51,961:INFO:Copying training dataset
+2025-09-30 10:13:51,968:INFO:Defining folds
+2025-09-30 10:13:51,968:INFO:Declaring metric variables
+2025-09-30 10:13:51,971:INFO:Importing untrained model
+2025-09-30 10:13:51,974:INFO:Extra Trees Classifier Imported successfully
+2025-09-30 10:13:51,980:INFO:Starting cross validation
+2025-09-30 10:13:51,982:INFO:Cross validating with StratifiedKFold(n_splits=3, random_state=None, shuffle=False), n_jobs=-1
+2025-09-30 10:13:56,161:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,163:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,167:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,168:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,169:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,173:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,174:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,175:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,180:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:56,196:INFO:Calculating mean and std
+2025-09-30 10:13:56,199:INFO:Creating metrics dataframe
+2025-09-30 10:13:56,202:INFO:Uploading results into container
+2025-09-30 10:13:56,203:INFO:Uploading model into container now
+2025-09-30 10:13:56,204:INFO:_master_model_container: 1
+2025-09-30 10:13:56,204:INFO:_display_container: 2
+2025-09-30 10:13:56,205:INFO:ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False)
+2025-09-30 10:13:56,205:INFO:create_model() successfully completed......................................
+2025-09-30 10:13:56,342:INFO:SubProcess create_model() end ==================================
+2025-09-30 10:13:56,342:INFO:Creating metrics dataframe
+2025-09-30 10:13:56,347:INFO:Initializing Random Forest Classifier
+2025-09-30 10:13:56,347:INFO:Total runtime is 0.07317603826522827 minutes
+2025-09-30 10:13:56,350:INFO:SubProcess create_model() called ==================================
+2025-09-30 10:13:56,351:INFO:Initializing create_model()
+2025-09-30 10:13:56,351:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=rf, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=True, predict=True, fit_kwargs={}, groups=None, refit=False, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=<pycaret.internal.display.display.CommonDisplay object at 0x00000125A67D7050>, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:13:56,351:INFO:Checking exceptions
+2025-09-30 10:13:56,351:INFO:Importing libraries
+2025-09-30 10:13:56,351:INFO:Copying training dataset
+2025-09-30 10:13:56,362:INFO:Defining folds
+2025-09-30 10:13:56,362:INFO:Declaring metric variables
+2025-09-30 10:13:56,368:INFO:Importing untrained model
+2025-09-30 10:13:56,377:INFO:Random Forest Classifier Imported successfully
+2025-09-30 10:13:56,387:INFO:Starting cross validation
+2025-09-30 10:13:56,390:INFO:Cross validating with StratifiedKFold(n_splits=3, random_state=None, shuffle=False), n_jobs=-1
+2025-09-30 10:13:59,734:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,739:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,746:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,749:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,754:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,760:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,796:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,805:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,814:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:13:59,829:INFO:Calculating mean and std
+2025-09-30 10:13:59,830:INFO:Creating metrics dataframe
+2025-09-30 10:13:59,833:INFO:Uploading results into container
+2025-09-30 10:13:59,833:INFO:Uploading model into container now
+2025-09-30 10:13:59,835:INFO:_master_model_container: 2
+2025-09-30 10:13:59,835:INFO:_display_container: 2
+2025-09-30 10:13:59,835:INFO:RandomForestClassifier(bootstrap=True, ccp_alpha=0.0, class_weight=None,
+                       criterion='gini', max_depth=None, max_features='sqrt',
+                       max_leaf_nodes=None, max_samples=None,
+                       min_impurity_decrease=0.0, min_samples_leaf=1,
+                       min_samples_split=2, min_weight_fraction_leaf=0.0,
+                       monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                       oob_score=False, random_state=42, verbose=0,
+                       warm_start=False)
+2025-09-30 10:13:59,835:INFO:create_model() successfully completed......................................
+2025-09-30 10:13:59,939:INFO:SubProcess create_model() end ==================================
+2025-09-30 10:13:59,939:INFO:Creating metrics dataframe
+2025-09-30 10:13:59,944:INFO:Initializing Decision Tree Classifier
+2025-09-30 10:13:59,945:INFO:Total runtime is 0.13313896258672078 minutes
+2025-09-30 10:13:59,948:INFO:SubProcess create_model() called ==================================
+2025-09-30 10:13:59,948:INFO:Initializing create_model()
+2025-09-30 10:13:59,948:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=dt, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=True, predict=True, fit_kwargs={}, groups=None, refit=False, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=<pycaret.internal.display.display.CommonDisplay object at 0x00000125A67D7050>, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:13:59,948:INFO:Checking exceptions
+2025-09-30 10:13:59,948:INFO:Importing libraries
+2025-09-30 10:13:59,948:INFO:Copying training dataset
+2025-09-30 10:13:59,957:INFO:Defining folds
+2025-09-30 10:13:59,957:INFO:Declaring metric variables
+2025-09-30 10:13:59,960:INFO:Importing untrained model
+2025-09-30 10:13:59,963:INFO:Decision Tree Classifier Imported successfully
+2025-09-30 10:13:59,968:INFO:Starting cross validation
+2025-09-30 10:13:59,971:INFO:Cross validating with StratifiedKFold(n_splits=3, random_state=None, shuffle=False), n_jobs=-1
+2025-09-30 10:14:02,854:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,859:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,859:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,862:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,864:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,865:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,868:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,870:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,874:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:02,888:INFO:Calculating mean and std
+2025-09-30 10:14:02,889:INFO:Creating metrics dataframe
+2025-09-30 10:14:02,892:INFO:Uploading results into container
+2025-09-30 10:14:02,893:INFO:Uploading model into container now
+2025-09-30 10:14:02,894:INFO:_master_model_container: 3
+2025-09-30 10:14:02,894:INFO:_display_container: 2
+2025-09-30 10:14:02,895:INFO:DecisionTreeClassifier(ccp_alpha=0.0, class_weight=None, criterion='gini',
+                       max_depth=None, max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_samples_leaf=1,
+                       min_samples_split=2, min_weight_fraction_leaf=0.0,
+                       monotonic_cst=None, random_state=42, splitter='best')
+2025-09-30 10:14:02,895:INFO:create_model() successfully completed......................................
+2025-09-30 10:14:03,018:INFO:SubProcess create_model() end ==================================
+2025-09-30 10:14:03,019:INFO:Creating metrics dataframe
+2025-09-30 10:14:03,024:INFO:Initializing Extreme Gradient Boosting
+2025-09-30 10:14:03,024:INFO:Total runtime is 0.1844603896141052 minutes
+2025-09-30 10:14:03,026:INFO:SubProcess create_model() called ==================================
+2025-09-30 10:14:03,027:INFO:Initializing create_model()
+2025-09-30 10:14:03,027:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=xgboost, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=True, predict=True, fit_kwargs={}, groups=None, refit=False, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=<pycaret.internal.display.display.CommonDisplay object at 0x00000125A67D7050>, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:14:03,027:INFO:Checking exceptions
+2025-09-30 10:14:03,027:INFO:Importing libraries
+2025-09-30 10:14:03,027:INFO:Copying training dataset
+2025-09-30 10:14:03,036:INFO:Defining folds
+2025-09-30 10:14:03,036:INFO:Declaring metric variables
+2025-09-30 10:14:03,040:INFO:Importing untrained model
+2025-09-30 10:14:03,043:INFO:Extreme Gradient Boosting Imported successfully
+2025-09-30 10:14:03,048:INFO:Starting cross validation
+2025-09-30 10:14:03,050:INFO:Cross validating with StratifiedKFold(n_splits=3, random_state=None, shuffle=False), n_jobs=-1
+2025-09-30 10:14:07,712:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,717:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,721:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,723:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,729:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,732:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,734:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,737:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,743:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:07,755:INFO:Calculating mean and std
+2025-09-30 10:14:07,757:INFO:Creating metrics dataframe
+2025-09-30 10:14:07,759:INFO:Uploading results into container
+2025-09-30 10:14:07,761:INFO:Uploading model into container now
+2025-09-30 10:14:07,761:INFO:_master_model_container: 4
+2025-09-30 10:14:07,761:INFO:_display_container: 2
+2025-09-30 10:14:07,762:INFO:XGBClassifier(base_score=None, booster='gbtree', callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              gamma=None, gpu_id=None, grow_policy=None, importance_type=None,
+              interaction_constraints=None, learning_rate=None, max_bin=None,
+              max_cat_threshold=None, max_cat_to_onehot=None,
+              max_delta_step=None, max_depth=None, max_leaves=None,
+              min_child_weight=None, missing=nan, monotone_constraints=None,
+              n_estimators=100, n_jobs=-1, num_parallel_tree=None,
+              objective='binary:logistic', predictor=None, ...)
+2025-09-30 10:14:07,762:INFO:create_model() successfully completed......................................
+2025-09-30 10:14:07,880:INFO:SubProcess create_model() end ==================================
+2025-09-30 10:14:07,880:INFO:Creating metrics dataframe
+2025-09-30 10:14:07,886:INFO:Initializing Light Gradient Boosting Machine
+2025-09-30 10:14:07,886:INFO:Total runtime is 0.2654935677846273 minutes
+2025-09-30 10:14:07,889:INFO:SubProcess create_model() called ==================================
+2025-09-30 10:14:07,889:INFO:Initializing create_model()
+2025-09-30 10:14:07,889:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=lightgbm, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=True, predict=True, fit_kwargs={}, groups=None, refit=False, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=<pycaret.internal.display.display.CommonDisplay object at 0x00000125A67D7050>, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:14:07,889:INFO:Checking exceptions
+2025-09-30 10:14:07,889:INFO:Importing libraries
+2025-09-30 10:14:07,889:INFO:Copying training dataset
+2025-09-30 10:14:07,899:INFO:Defining folds
+2025-09-30 10:14:07,899:INFO:Declaring metric variables
+2025-09-30 10:14:07,904:INFO:Importing untrained model
+2025-09-30 10:14:07,907:INFO:Light Gradient Boosting Machine Imported successfully
+2025-09-30 10:14:07,913:INFO:Starting cross validation
+2025-09-30 10:14:07,915:INFO:Cross validating with StratifiedKFold(n_splits=3, random_state=None, shuffle=False), n_jobs=-1
+2025-09-30 10:14:14,147:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,158:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,160:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,169:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,176:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,187:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,242:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,254:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,265:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:14,287:INFO:Calculating mean and std
+2025-09-30 10:14:14,299:INFO:Creating metrics dataframe
+2025-09-30 10:14:14,306:INFO:Uploading results into container
+2025-09-30 10:14:14,308:INFO:Uploading model into container now
+2025-09-30 10:14:14,309:INFO:_master_model_container: 5
+2025-09-30 10:14:14,309:INFO:_display_container: 2
+2025-09-30 10:14:14,309:INFO:LGBMClassifier(boosting_type='gbdt', class_weight=None, colsample_bytree=1.0,
+               importance_type='split', learning_rate=0.1, max_depth=-1,
+               min_child_samples=20, min_child_weight=0.001, min_split_gain=0.0,
+               n_estimators=100, n_jobs=-1, num_leaves=31, objective=None,
+               random_state=42, reg_alpha=0.0, reg_lambda=0.0, subsample=1.0,
+               subsample_for_bin=200000, subsample_freq=0)
+2025-09-30 10:14:14,310:INFO:create_model() successfully completed......................................
+2025-09-30 10:14:14,444:INFO:SubProcess create_model() end ==================================
+2025-09-30 10:14:14,444:INFO:Creating metrics dataframe
+2025-09-30 10:14:14,453:INFO:Initializing CatBoost Classifier
+2025-09-30 10:14:14,453:INFO:Total runtime is 0.37494217554728193 minutes
+2025-09-30 10:14:14,459:INFO:SubProcess create_model() called ==================================
+2025-09-30 10:14:14,460:INFO:Initializing create_model()
+2025-09-30 10:14:14,460:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=catboost, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=True, predict=True, fit_kwargs={}, groups=None, refit=False, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=<pycaret.internal.display.display.CommonDisplay object at 0x00000125A67D7050>, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:14:14,460:INFO:Checking exceptions
+2025-09-30 10:14:14,460:INFO:Importing libraries
+2025-09-30 10:14:14,460:INFO:Copying training dataset
+2025-09-30 10:14:14,474:INFO:Defining folds
+2025-09-30 10:14:14,474:INFO:Declaring metric variables
+2025-09-30 10:14:14,479:INFO:Importing untrained model
+2025-09-30 10:14:14,484:INFO:CatBoost Classifier Imported successfully
+2025-09-30 10:14:14,493:INFO:Starting cross validation
+2025-09-30 10:14:14,496:INFO:Cross validating with StratifiedKFold(n_splits=3, random_state=None, shuffle=False), n_jobs=-1
+2025-09-30 10:14:22,071:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:22,084:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:22,096:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:27,432:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:27,437:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:27,442:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\metrics\_classification.py:1561: UserWarning: Note that pos_label (set to 'defensa') is ignored when average != 'binary' (got 'weighted'). You may use labels=[pos_label] to specify a single positive class.
+  warnings.warn(
+
+2025-09-30 10:14:27,461:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\model_selection\_validation.py:547: FitFailedWarning: 
+1 fits failed out of a total of 3.
+The score on these train-test partitions for these parameters will be set to 0.0.
+If these failures are not expected, you can try to debug them by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+1 fits failed with the following error:
+Traceback (most recent call last):
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\model_selection\_validation.py", line 895, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pycaret\internal\pipeline.py", line 278, in fit
+    fitted_estimator = self._memory_fit(
+                       ^^^^^^^^^^^^^^^^^
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\joblib\memory.py", line 353, in __call__
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pycaret\internal\pipeline.py", line 69, in _fit_one
+    transformer.fit(*args)
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\catboost\core.py", line 5220, in fit
+    self._fit(X, y, cat_features, text_features, embedding_features, None, sample_weight, None, None, None, None, baseline, use_best_model,
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\catboost\core.py", line 2400, in _fit
+    self._train(
+  File "C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\catboost\core.py", line 1780, in _train
+    self._object._train(train_pool, test_pool, params, allow_clear_pool, init_model._object if init_model else None)
+  File "_catboost.pyx", line 4833, in _catboost._CatBoost._train
+  File "_catboost.pyx", line 4882, in _catboost._CatBoost._train
+_catboost.CatBoostError: C:/Go_Agent/pipelines/BuildMaster/catboost.git/catboost/libs/train_lib/dir_helper.cpp:20: Can't create train working dir: catboost_info
+
+  warnings.warn(some_fits_failed_message, FitFailedWarning)
+
+2025-09-30 10:14:27,461:INFO:Calculating mean and std
+2025-09-30 10:14:27,463:INFO:Creating metrics dataframe
+2025-09-30 10:14:27,464:INFO:Uploading results into container
+2025-09-30 10:14:27,465:INFO:Uploading model into container now
+2025-09-30 10:14:27,465:INFO:_master_model_container: 6
+2025-09-30 10:14:27,465:INFO:_display_container: 2
+2025-09-30 10:14:27,465:INFO:<catboost.core.CatBoostClassifier object at 0x00000125A6566CD0>
+2025-09-30 10:14:27,465:INFO:create_model() successfully completed......................................
+2025-09-30 10:14:27,567:INFO:SubProcess create_model() end ==================================
+2025-09-30 10:14:27,567:INFO:Creating metrics dataframe
+2025-09-30 10:14:27,575:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pycaret\internal\pycaret_experiment\supervised_experiment.py:339: FutureWarning: Styler.applymap has been deprecated. Use Styler.map instead.
+  .applymap(highlight_cols, subset=["TT (Sec)"])
+
+2025-09-30 10:14:27,582:INFO:Initializing create_model()
+2025-09-30 10:14:27,583:INFO:create_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), round=4, cross_validation=False, predict=False, fit_kwargs={}, groups=None, refit=True, probability_threshold=None, experiment_custom_tags=None, verbose=False, system=False, add_to_model_list=True, metrics=None, display=None, model_only=True, return_train_score=False, error_score=0.0, kwargs={})
+2025-09-30 10:14:27,583:INFO:Checking exceptions
+2025-09-30 10:14:27,584:INFO:Importing libraries
+2025-09-30 10:14:27,584:INFO:Copying training dataset
+2025-09-30 10:14:27,596:INFO:Defining folds
+2025-09-30 10:14:27,596:INFO:Declaring metric variables
+2025-09-30 10:14:27,596:INFO:Importing untrained model
+2025-09-30 10:14:27,596:INFO:Declaring custom model
+2025-09-30 10:14:27,597:INFO:Extra Trees Classifier Imported successfully
+2025-09-30 10:14:27,598:INFO:Cross validation set to False
+2025-09-30 10:14:27,599:INFO:Fitting Model
+2025-09-30 10:14:27,783:INFO:ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False)
+2025-09-30 10:14:27,783:INFO:create_model() successfully completed......................................
+2025-09-30 10:14:27,891:INFO:_master_model_container: 6
+2025-09-30 10:14:27,892:INFO:_display_container: 2
+2025-09-30 10:14:27,892:INFO:ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False)
+2025-09-30 10:14:27,892:INFO:compare_models() successfully completed......................................
+2025-09-30 10:14:27,942:INFO:Initializing evaluate_model()
+2025-09-30 10:14:27,942:INFO:evaluate_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), fold=None, fit_kwargs=None, plot_kwargs=None, feature_name=None, groups=None)
+2025-09-30 10:14:27,954:INFO:Initializing plot_model()
+2025-09-30 10:14:27,955:INFO:plot_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), plot=pipeline, scale=1, save=False, fold=StratifiedKFold(n_splits=3, random_state=None, shuffle=False), fit_kwargs={}, plot_kwargs=None, groups=None, feature_name=None, label=False, verbose=False, system=True, display=None, display_format=None)
+2025-09-30 10:14:27,955:INFO:Checking exceptions
+2025-09-30 10:14:28,000:INFO:Preloading libraries
+2025-09-30 10:14:28,047:INFO:Copying training dataset
+2025-09-30 10:14:28,047:INFO:Plot type: pipeline
+2025-09-30 10:14:28,205:INFO:Visual Rendered Successfully
+2025-09-30 10:14:28,300:INFO:plot_model() successfully completed......................................
+2025-09-30 10:14:28,303:INFO:Initializing plot_model()
+2025-09-30 10:14:28,303:INFO:plot_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), plot=confusion_matrix, scale=1, save=False, fold=None, fit_kwargs=None, plot_kwargs=None, groups=None, feature_name=None, label=False, verbose=True, system=True, display=None, display_format=None)
+2025-09-30 10:14:28,303:INFO:Checking exceptions
+2025-09-30 10:14:28,329:INFO:Preloading libraries
+2025-09-30 10:14:28,349:INFO:Copying training dataset
+2025-09-30 10:14:28,349:INFO:Plot type: confusion_matrix
+2025-09-30 10:14:28,648:INFO:Fitting Model
+2025-09-30 10:14:28,649:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\sklearn\base.py:493: UserWarning: X does not have valid feature names, but ExtraTreesClassifier was fitted with feature names
+  warnings.warn(
+
+2025-09-30 10:14:28,650:INFO:Scoring test/hold-out set
+2025-09-30 10:14:28,876:INFO:Visual Rendered Successfully
+2025-09-30 10:14:28,970:INFO:plot_model() successfully completed......................................
+2025-09-30 10:14:28,971:INFO:Initializing plot_model()
+2025-09-30 10:14:28,972:INFO:plot_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), plot=feature, scale=1, save=False, fold=None, fit_kwargs=None, plot_kwargs=None, groups=None, feature_name=None, label=False, verbose=True, system=True, display=None, display_format=None)
+2025-09-30 10:14:28,972:INFO:Checking exceptions
+2025-09-30 10:14:28,996:INFO:Preloading libraries
+2025-09-30 10:14:29,020:INFO:Copying training dataset
+2025-09-30 10:14:29,020:INFO:Plot type: feature
+2025-09-30 10:14:29,020:WARNING:No coef_ found. Trying feature_importances_
+2025-09-30 10:14:29,229:INFO:Visual Rendered Successfully
+2025-09-30 10:14:29,324:INFO:plot_model() successfully completed......................................
+2025-09-30 10:14:29,325:INFO:Initializing plot_model()
+2025-09-30 10:14:29,325:INFO:plot_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), plot=learning, scale=1, save=False, fold=None, fit_kwargs=None, plot_kwargs=None, groups=None, feature_name=None, label=False, verbose=True, system=True, display=None, display_format=None)
+2025-09-30 10:14:29,325:INFO:Checking exceptions
+2025-09-30 10:14:29,349:INFO:Preloading libraries
+2025-09-30 10:14:29,367:INFO:Copying training dataset
+2025-09-30 10:14:29,367:INFO:Plot type: learning
+2025-09-30 10:14:29,674:INFO:Fitting Model
+2025-09-30 10:14:34,326:INFO:Visual Rendered Successfully
+2025-09-30 10:14:34,421:INFO:plot_model() successfully completed......................................
+2025-09-30 10:14:34,423:INFO:Initializing get_config()
+2025-09-30 10:14:34,424:INFO:get_config(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, variable=y_train)
+2025-09-30 10:14:34,424:INFO:Variable: 'y_train' used to return the transformed values in PyCaret 2.x. From PyCaret 3.x, this will return the raw values. If you need the transformed values, call get_config with 'y_train_transformed' instead.
+2025-09-30 10:14:34,425:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pycaret\internal\pycaret_experiment\pycaret_experiment.py:321: UserWarning: Variable: 'y_train' used to return the transformed values in PyCaret 2.x. From PyCaret 3.x, this will return the raw values. If you need the transformed values, call get_config with 'y_train_transformed' instead.
+  warnings.warn(msg)  # print on screen
+
+2025-09-30 10:14:34,428:INFO:Variable:  returned as 1930    central_defensa
+3662            arquero
+671             central
+262      central_ataque
+3495     central_ataque
+             ...       
+326              ataque
+454      central_ataque
+917             arquero
+2790            central
+1180     central_ataque
+Name: label, Length: 2757, dtype: category
+Categories (6, object): ['arquero', 'ataque', 'central', 'central_ataque', 'central_defensa', 'defensa']
+2025-09-30 10:14:34,428:INFO:get_config() successfully completed......................................
+2025-09-30 10:14:34,429:INFO:Initializing get_config()
+2025-09-30 10:14:34,429:INFO:get_config(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, variable=X_test)
+2025-09-30 10:14:34,429:INFO:Variable: 'X_test' used to return the transformed values in PyCaret 2.x. From PyCaret 3.x, this will return the raw values. If you need the transformed values, call get_config with 'X_test_transformed' instead.
+2025-09-30 10:14:34,429:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pycaret\internal\pycaret_experiment\pycaret_experiment.py:321: UserWarning: Variable: 'X_test' used to return the transformed values in PyCaret 2.x. From PyCaret 3.x, this will return the raw values. If you need the transformed values, call get_config with 'X_test_transformed' instead.
+  warnings.warn(msg)  # print on screen
+
+2025-09-30 10:14:34,436:INFO:Variable:  returned as        Nationality National_Position  Height  Weight Preffered_Foot  Age  \
+2853        Serbia             Vacío     198      91          Right   29   
+1709       Austria             Vacío     182      76           Left   29   
+792          Spain             Vacío     184      73          Right   23   
+2758   Netherlands             Vacío     183      83          Right   26   
+3808        Sweden             Vacío     190      90          Right   31   
+...            ...               ...     ...     ...            ...  ...   
+1405  South Africa             Vacío     174      61          Right   27   
+607          Italy             Vacío     180      77          Right   32   
+2328        Brazil             Vacío     191      85          Right   29   
+1171        Brazil             Vacío     175      69          Right   25   
+351          Italy             Vacío     180      73          Right   30   
+
+            Work_Rate  Weak_foot  Skill_Moves  Ball_Control  ...  Agility  \
+2853    High / Medium          2            2            64  ...       35   
+1709    High / Medium          3            2            67  ...       67   
+792      Medium / Low          3            3            77  ...       66   
+2758       Low / High          2            2            68  ...       54   
+3808      High / High          2            2            54  ...       37   
+...               ...        ...          ...           ...  ...      ...   
+1405  Medium / Medium          3            5            73  ...       61   
+607   Medium / Medium          3            2            74  ...       73   
+2328  Medium / Medium          4            3            55  ...       45   
+1171     Medium / Low          4            4            74  ...       81   
+351     High / Medium          2            3            76  ...       79   
+
+      Jumping  Heading  Shot_Power  Finishing  Long_Shots  Curve  \
+2853       32       79          70         65          62     47   
+1709       73       70          76         72          67     63   
+792        57       55          65         69          66     76   
+2758       64       60          70         46          66     70   
+3808       58       67          67         49          44     25   
+...       ...      ...         ...        ...         ...    ...   
+1405       47       42          68         61          67     61   
+607        93       88          68         83          40     63   
+2328       65       72          55         28          33     63   
+1171       53       47          61         68          51     71   
+351        75       68          68         38          60     69   
+
+      Freekick_Accuracy  Penalties  Volleys  
+2853                 49         68       67  
+1709                 62         62       70  
+792                  64         59       52  
+2758                 65         45       36  
+3808                 29         33       28  
+...                 ...        ...      ...  
+1405                 46         55       59  
+607                  40         85       80  
+2328                 27         51       19  
+1171                 73         77       61  
+351                  44         48       54  
+
+[1182 rows x 37 columns]
+2025-09-30 10:14:34,436:INFO:get_config() successfully completed......................................
+2025-09-30 10:14:34,437:INFO:Initializing get_config()
+2025-09-30 10:14:34,437:INFO:get_config(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, variable=y_test)
+2025-09-30 10:14:34,437:INFO:Variable: 'y_test' used to return the transformed values in PyCaret 2.x. From PyCaret 3.x, this will return the raw values. If you need the transformed values, call get_config with 'y_test_transformed' instead.
+2025-09-30 10:14:34,437:WARNING:C:\Users\senza\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pycaret\internal\pycaret_experiment\pycaret_experiment.py:321: UserWarning: Variable: 'y_test' used to return the transformed values in PyCaret 2.x. From PyCaret 3.x, this will return the raw values. If you need the transformed values, call get_config with 'y_test_transformed' instead.
+  warnings.warn(msg)  # print on screen
+
+2025-09-30 10:14:34,439:INFO:Variable:  returned as 2853             ataque
+1709             ataque
+792             central
+2758    central_defensa
+3808            defensa
+             ...       
+1405            central
+607              ataque
+2328            defensa
+1171     central_ataque
+351             defensa
+Name: label, Length: 1182, dtype: category
+Categories (6, object): ['arquero', 'ataque', 'central', 'central_ataque', 'central_defensa', 'defensa']
+2025-09-30 10:14:34,439:INFO:get_config() successfully completed......................................
+2025-09-30 10:14:34,440:INFO:Initializing predict_model()
+2025-09-30 10:14:34,440:INFO:predict_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x00000125A6F4EE50>, estimator=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), probability_threshold=None, encoded_labels=False, raw_score=False, round=4, verbose=True, ml_usecase=None, preprocess=True, encode_labels=<function _SupervisedExperiment.predict_model.<locals>.encode_labels at 0x00000125A4ED9800>)
+2025-09-30 10:14:34,440:INFO:Checking exceptions
+2025-09-30 10:14:34,440:INFO:Preloading libraries
+2025-09-30 10:14:34,442:INFO:Set up data.
+2025-09-30 10:14:34,447:INFO:Set up index.
+2025-09-30 10:14:34,788:INFO:Initializing save_model()
+2025-09-30 10:14:34,788:INFO:save_model(model=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                     criterion='gini', max_depth=None, max_features='sqrt',
+                     max_leaf_nodes=None, max_samples=None,
+                     min_impurity_decrease=0.0, min_samples_leaf=1,
+                     min_samples_split=2, min_weight_fraction_leaf=0.0,
+                     monotonic_cst=None, n_estimators=100, n_jobs=-1,
+                     oob_score=False, random_state=42, verbose=0,
+                     warm_start=False), model_name=c:\Users\senza\OneDrive\Escritorio\Josefa\9. MDS UCH\Semestres\Primavera 2025\Laboratorio de Programación Científica\Laboratorios\TamoJosha\Laboratorios\Laboratorio_5\Laboratorios\Laboratorio_5\data\best_tree_pycaret, prep_pipe_=Pipeline(memory=FastMemory(location=C:\Users\senza\AppData\Local\Temp\joblib),
+         steps=[('label_encoding',
+                 TransformerWrapperWithInverse(exclude=None, include=None,
+                                               transformer=LabelEncoder())),
+                ('numerical_imputer',
+                 TransformerWrapper(exclude=None,
+                                    include=['Height', 'Weight', 'Age',
+                                             'Weak_foot', 'Skill_Moves',
+                                             'Ball_Control', 'Dribbling',
+                                             'Marking', 'Sliding_Tack...
+                                                              use_cat_names=True,
+                                                              verbose=0))),
+                ('rest_encoding',
+                 TransformerWrapper(exclude=None,
+                                    include=['Nationality',
+                                             'National_Position'],
+                                    transformer=TargetEncoder(cols=['Nationality',
+                                                                    'National_Position'],
+                                                              drop_invariant=False,
+                                                              handle_missing='return_nan',
+                                                              handle_unknown='value',
+                                                              hierarchy=None,
+                                                              min_samples_leaf=20,
+                                                              return_df=True,
+                                                              smoothing=10,
+                                                              verbose=0)))],
+         verbose=False), verbose=True, use_case=MLUsecase.CLASSIFICATION, kwargs={})
+2025-09-30 10:14:34,788:INFO:Adding model into prep_pipe
+2025-09-30 10:14:34,842:INFO:c:\Users\senza\OneDrive\Escritorio\Josefa\9. MDS UCH\Semestres\Primavera 2025\Laboratorio de Programación Científica\Laboratorios\TamoJosha\Laboratorios\Laboratorio_5\Laboratorios\Laboratorio_5\data\best_tree_pycaret.pkl saved in current working directory
+2025-09-30 10:14:34,855:INFO:Pipeline(memory=Memory(location=None),
+         steps=[('label_encoding',
+                 TransformerWrapperWithInverse(exclude=None, include=None,
+                                               transformer=LabelEncoder())),
+                ('numerical_imputer',
+                 TransformerWrapper(exclude=None,
+                                    include=['Height', 'Weight', 'Age',
+                                             'Weak_foot', 'Skill_Moves',
+                                             'Ball_Control', 'Dribbling',
+                                             'Marking', 'Sliding_Tackle',
+                                             'Standing_Tackle', 'Aggression',
+                                             'Reac...
+                 ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0,
+                                      class_weight=None, criterion='gini',
+                                      max_depth=None, max_features='sqrt',
+                                      max_leaf_nodes=None, max_samples=None,
+                                      min_impurity_decrease=0.0,
+                                      min_samples_leaf=1, min_samples_split=2,
+                                      min_weight_fraction_leaf=0.0,
+                                      monotonic_cst=None, n_estimators=100,
+                                      n_jobs=-1, oob_score=False,
+                                      random_state=42, verbose=0,
+                                      warm_start=False))],
+         verbose=False)
+2025-09-30 10:14:34,855:INFO:save_model() successfully completed......................................
