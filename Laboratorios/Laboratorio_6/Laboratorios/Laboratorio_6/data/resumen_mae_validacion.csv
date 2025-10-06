@@ -1,0 +1,6 @@
+modelo,ruta,MAE_valid
+XGB + Optuna,Laboratorios\Laboratorio_6\data\best_pipeline_optuna.pkl,2444.1614755546457
+XGB + Optuna + Pruning,Laboratorios\Laboratorio_6\data\best_pipeline_optuna_pruning.pkl,2587.150638269646
+XGBRegressor (default),Laboratorios\Laboratorio_6\data\xgb_regressor_model.pkl,2678.3521089642963
+XGBRegressor (constraints),Laboratorios\Laboratorio_6\data\xgb_regressor_model_wc.sav,3046.176832568343
+DummyRegressor (baseline),Laboratorios\Laboratorio_6\data\dummy_regressor_model.pkl,12518.387190585083
