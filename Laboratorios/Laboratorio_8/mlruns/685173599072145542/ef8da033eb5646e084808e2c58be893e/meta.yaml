@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Lab8/mlruns/685173599072145542/ef8da033eb5646e084808e2c58be893e/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '685173599072145542'
+lifecycle_stage: active
+run_id: ef8da033eb5646e084808e2c58be893e
+run_name: crawling-deer-683
+run_uuid: ef8da033eb5646e084808e2c58be893e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760973833802
+status: 1
+tags: []
+user_id: '56966'

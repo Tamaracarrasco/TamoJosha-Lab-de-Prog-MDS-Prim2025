@@ -1,0 +1,6 @@
+artifact_location: file:///C:/Lab8/mlruns/685173599072145542
+creation_time: 1760973701838
+experiment_id: '685173599072145542'
+last_update_time: 1760973701838
+lifecycle_stage: active
+name: XGBoost_WaterPotability

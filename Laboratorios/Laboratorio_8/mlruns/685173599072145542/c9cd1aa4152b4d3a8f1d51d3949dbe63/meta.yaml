@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Lab8/mlruns/685173599072145542/c9cd1aa4152b4d3a8f1d51d3949dbe63/artifacts
+end_time: 1760973713164
+entry_point_name: ''
+experiment_id: '685173599072145542'
+lifecycle_stage: active
+run_id: c9cd1aa4152b4d3a8f1d51d3949dbe63
+run_name: XGB_lr_0.011_depth_4
+run_uuid: c9cd1aa4152b4d3a8f1d51d3949dbe63
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1760973710135
+status: 3
+tags: []
+user_id: '56966'
