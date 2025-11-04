@@ -1244,3 +1244,4 @@ File Path                              PID    Runtime      # DAGs    # Errors  L
 /opt/airflow/dags/hiring_functions.py                           0           0  1.25s           2025-11-04T00:25:49                       3
 /opt/airflow/dags/dag_lineal.py                                 0           0                                                            0
 ================================================================================
+[2025-11-04T01:14:20.300+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
