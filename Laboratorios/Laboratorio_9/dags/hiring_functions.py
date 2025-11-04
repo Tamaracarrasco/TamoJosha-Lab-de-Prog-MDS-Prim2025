@@ -169,9 +169,6 @@ def gradio_interface(**kwargs):
     dags_dir = Path(__file__).resolve().parent
     model_path = dags_dir / run_folder_name / "models" / "pipeline.joblib"
 
-    if not model_path.exists():
-        raise FileNotFoundError(f"[gradio_interface] No existe el modelo en: {model_path}")
-
     interface = gr.Interface(
         fn=lambda file: predict(file, model_path),
         inputs=gr.File(label="Sube un archivo JSON"),
