@@ -1,5 +1,7 @@
 ## Desarrollo 2.1 Preparando un Nuevo Pipeline
 
+# hiring_dynamic_functions.py
+
 #Librerías
 from pathlib import Path
 import shutil
@@ -10,9 +12,10 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
+from sklearn.metrics import accuracy_score
 
 
-# Primera definición: create_folders(**context) --> Crea YYYY-MM-DD/{raw, preprocessed, splits, models}
+# Primera definición: create_folders(**context) --> Crea YYYY-MM-DD/(raw, preprocessed, splits, models)
 
 def create_folders(**context):
     ds = context["ds"]                               
@@ -22,25 +25,9 @@ def create_folders(**context):
     for sub in ["raw", "preprocessed", "splits", "models"]:
         (run_dir / sub).mkdir(parents=True, exist_ok=True)
 
-    # traigo data_1.csv desde dags/
-    src1 = dags_dir / "data_1.csv"
-    dst1 = run_dir / "raw" / "data_1.csv"
-    if src1.exists() and not dst1.exists():
-        shutil.copy2(src1, dst1)
+# Segunda definición: load_and_merge(**context) --> Lee raw/data_1.csv (+ data_2.csv si existe), concat y guarda preprocessed/merged.csv
 
-    # lo mismo con data_2.csv
-    src2 = dags_dir / "data_2.csv"
-    dst2 = run_dir / "raw" / "data_2.csv"
-    if src2.exists() and not dst2.exists():
-        shutil.copy2(src2, dst2)
-
-    print(f"[create_folders] Carpeta de ejecución: {run_dir}")
-    print("[create_folders] Estructura creada: raw, preprocessed, splits, models")
-
-
-# Segunda definición: load_ands_merge(**context) --> Lee raw/data_1.csv (+ data_2.csv si existe), concat y guarda preprocessed/merged.csv
-
-def load_ands_merge(**context):
+def load_and_merge(**context):
     ds = context["ds"]
     base = Path(__file__).resolve().parent / ds
     raw_dir = base / "raw"
@@ -53,15 +40,15 @@ def load_ands_merge(**context):
     dfs = []
     if p1.exists():
         dfs.append(pd.read_csv(p1))
-        print(f"[load_ands_merge] Leído: {p1}")
+        print(f"[load_and_merge] Leído: {p1}")
     if p2.exists():
         dfs.append(pd.read_csv(p2))
-        print(f"[load_ands_merge] Leído: {p2}")
+        print(f"[load_and_merge] Leído: {p2}")
 
     merged = pd.concat(dfs, ignore_index=True)
     out = prep_dir / "merged.csv"
     merged.to_csv(out, index=False)
-    print(f"[load_ands_merge] Guardado: {out} (n={len(merged)})")
+    print(f"[load_and_merge] Guardado: {out} (n={len(merged)})")
 
 
 # Tercera definición: split_data(**context) --> Lee preprocessed/merged.csv y hace hold-out 80/20 (seed=42)
@@ -85,10 +72,9 @@ def split_data(**context):
     (X_train.assign(HiringDecision=y_train)).to_csv(splits_dir / "train.csv", index=False)
     (X_test.assign(HiringDecision=y_test)).to_csv(splits_dir / "test.csv", index=False)
 
-    print(f"[split_data] Guardados train.csv y test.csv en {splits_dir}")
 
-
-# Cuarta definición: Helpers de preprocesamiento (reutilizables)
+# Cuarta definición: train_model(model, model_name=None, **context) --> Entrena pipeline(preproc + modelo) y guarda models/<nombre>.joblib
+# Acá también defino el preprocessor de las bases .csv
 
 def _build_preprocessor(X: pd.DataFrame) -> ColumnTransformer:
     """
@@ -120,16 +106,12 @@ def _build_preprocessor(X: pd.DataFrame) -> ColumnTransformer:
         remainder="drop",
     )
 
-
-# Quonta definición: train_model(model, model_name=None, **context) --> Entrena pipeline(preproc + modelo) y guarda models/<nombre>.joblib
-
 def train_model(model, model_name: str | None = None, **context):
     """
-    Parámetros
-    ----------
-    model : estimador sklearn ya instanciado (clasificador).
-    model_name : str opcional para el nombre del archivo .joblib
-                 (si no se pasa, se usa la clase del modelo).
+    Entrena (preprocesamiento + modelo) sobre <ds>/splits/train.csv
+    y guarda el pipeline en <ds>/models/<nombre>.joblib
+    - model: estimador sklearn ya instanciado (clasificador)
+    - model_name: nombre del archivo .joblib (opcional). Si no, usa la clase del modelo.
     """
     ds = context["ds"]
     base = Path(__file__).resolve().parent / ds
@@ -139,8 +121,11 @@ def train_model(model, model_name: str | None = None, **context):
 
     train_path = splits_dir / "train.csv"
 
-    y_train = train_df["HiringDecision"]
-    X_train = train_df.drop(columns=["HiringDecision"])
+    train_df = pd.read_csv(train_path)
+    target_col = "HiringDecision"
+
+    y_train = train_df[target_col]
+    X_train = train_df.drop(columns=[target_col])
 
     preprocessor = _build_preprocessor(X_train)
 
@@ -157,11 +142,9 @@ def train_model(model, model_name: str | None = None, **context):
     print(f"[train_model] Modelo entrenado y guardado en: {out_path}")
 
 
-# Sexta definición: evaluate_models(**context) --> Evalúa todos los .joblib en models/ con accuracy en test y selecciona el mejor y lo guarda como models/best_model.joblib
+# Quinta definición: evaluate_models(**context) --> Evalúa todos los .joblib en models/ con accuracy en test y selecciona el mejor y lo guarda como models/best_model.joblib
 
 def evaluate_models(**context):
-    from sklearn.metrics import accuracy_score
-
     ds = context["ds"]
     base = Path(__file__).resolve().parent / ds
     splits_dir = base / "splits"
@@ -181,17 +164,14 @@ def evaluate_models(**context):
     best_pipe = None
 
     for path in candidates:
-        try:
-            pipe = joblib.load(path)
-            y_pred = pipe.predict(X_test)
-            acc = accuracy_score(y_test, y_pred)
-            print(f"[evaluate_models] {path.name}: accuracy={acc:.4f}")
-            if acc > best_score:
-                best_score = acc
-                best_name = path.name
-                best_pipe = pipe
-        except Exception as e:
-            print(f"[evaluate_models][WARN] No se pudo evaluar {path.name}: {e}")
+        pipe = joblib.load(path)
+        y_pred = pipe.predict(X_test)
+        acc = accuracy_score(y_test, y_pred)
+        print(f"[evaluate_models] {path.name}: accuracy={acc:.4f}")
+        if acc > best_score:
+            best_score = acc
+            best_name = path.name
+            best_pipe = pipe
 
     out_best = models_dir / "best_model.joblib"
     joblib.dump(best_pipe, out_best)

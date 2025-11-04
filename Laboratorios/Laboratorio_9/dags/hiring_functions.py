@@ -1,5 +1,7 @@
 ## Desarrollo parte 1.1 Preparando el Pipeline
 
+# hiring_functions.py
+
 # Librerías
 from pathlib import Path
 import shutil
@@ -14,12 +16,11 @@ from sklearn.metrics import accuracy_score, f1_score
 import joblib
 
 
-# Primera definición: create_folders(**context) --> crea estructura y copia data_1.csv
+# Primera definición: create_folders(**context)
 
 def create_folders(**context):
     """
     Crea la carpeta de ejecución YYYY-MM-DD con subcarpetas raw/splits/models
-    y copia dags/data_1.csv a <ds>/raw/data_1.csv si existe.
     """
     ds = context["ds"]                             
     dags_dir = Path(__file__).resolve().parent    
@@ -27,16 +28,7 @@ def create_folders(**context):
 
     for sub in ["raw", "splits", "models"]:
         (run_dir / sub).mkdir(parents=True, exist_ok=True)
-
-    src = dags_dir / "data_1.csv"                
-    dst = run_dir / "raw" / "data_1.csv"
-
-    if src.exists():
-        if not dst.exists():
-            shutil.copy2(src, dst)
-            print(f"[create_folders] Copiado: {src} -> {dst}")
-        else:
-            print(f"[create_folders] Ya existe: {dst} (no se copia)")
+        
 
 # Segunda definición: split_data(**context)--> hold-out 80/20 estratificado
 
@@ -187,5 +179,4 @@ def gradio_interface(**kwargs):
         share=True,    
         inbrowser=False,
     )
-
 
