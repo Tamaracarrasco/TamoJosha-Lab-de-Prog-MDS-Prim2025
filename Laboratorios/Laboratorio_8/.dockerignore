@@ -1,0 +1,25 @@
+_pycache_/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+env/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Datos grandes y artefactos locales
+*.zip
+*.tar
+*.tar.gz
+
+# Carpetas que no se necesitamos en la imagen
+plots/
+mlruns/
+
+# Sistema
+.DS_Store
+Thumbs.db
