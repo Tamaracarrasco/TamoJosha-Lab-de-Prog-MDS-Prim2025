@@ -1,0 +1,30 @@
+# Dockerfile_dynamics
+FROM python:3.10-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    AIRFLOW_HOME=/opt/airflow
+
+# Requisitos de SO (incluye curl como pide el enunciado)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl build-essential git && \
+    rm -rf /var/lib/apt/lists/*
+
+# Airflow con constraints para Py3.10
+RUN pip install --no-cache-dir "apache-airflow==2.10.2" \
+  --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.10.2/constraints-3.10.txt"
+
+# Paquetes de tu pipeline (pin de sklearn para compat con sparse_output=False)
+RUN pip install --no-cache-dir \
+    pandas==2.2.2 scikit-learn==1.3.2 joblib numpy \
+    gradio
+
+# Estructura estándar de Airflow
+RUN mkdir -p ${AIRFLOW_HOME}/dags ${AIRFLOW_HOME}/logs ${AIRFLOW_HOME}/plugins
+WORKDIR ${AIRFLOW_HOME}
+
+# (Opcional) Copiar dags en build; normalmente los montaremos por volumen al correr
+# COPY dags/ ./dags/
+
+EXPOSE 8080 7860
+CMD ["bash", "-lc", "airflow standalone"]

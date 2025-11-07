@@ -1,0 +1,27 @@
+# --- Ignorar logs y bases internas de Airflow ---
+airflow_home/
+logs/
+*.log
+*.pid
+*.db
+
+# --- Ignorar carpetas generadas por DAGs ---
+dags/*/models/
+dags/*/raw/
+dags/*/splits/
+dags/*/preprocessed/
+dags/*/output/
+dags/*/__pycache__/
+__pycache__/
+
+# --- Ignorar archivos binarios o temporales ---
+*.pkl
+*.joblib
+*.parquet
+*.sav
+
+# --- Ignorar cache o temporales de Python ---
+*.pyc
+*.pyo
+*.tmp
+*.ipynb_checkpoints/
