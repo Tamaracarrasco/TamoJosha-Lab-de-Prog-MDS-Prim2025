@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/56966/OneDrive%20-%20Universidad%20de%20Chile/Escritorio/Laboratorio%20de%20programaci%C3%B3n/TamoJosha-Lab-de-Prog-MDS-Prim2025/Proyecto/parte_2/mlflow/mlruns/512858102293429379/55205c32ff364e63863fbcc91095d50c/artifacts
+end_time: 1763350629617
+entry_point_name: ''
+experiment_id: '512858102293429379'
+lifecycle_stage: active
+run_id: 55205c32ff364e63863fbcc91095d50c
+run_name: 20251117_001442_f1_0.2437
+run_uuid: 55205c32ff364e63863fbcc91095d50c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763349282526
+status: 3
+tags: []
+user_id: '56966'

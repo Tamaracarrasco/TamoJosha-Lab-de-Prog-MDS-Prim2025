@@ -1,0 +1,42 @@
+{
+  "timestamp": "20251117_003709",
+  "f1_score_val": 0.24366261696512312,
+  "params": {
+    "learning_rate": 0.03807947176588889,
+    "n_estimators": 954,
+    "max_depth": 8,
+    "min_child_weight": 3,
+    "reg_alpha": 0.15601864044243652,
+    "reg_lambda": 0.15599452033620265,
+    "scale_pos_weight": 55.0270470850169,
+    "random_state": 42,
+    "tree_method": "hist",
+    "eval_metric": "logloss"
+  },
+  "metrics": {
+    "train": {
+      "accuracy": 0.8715049158130225,
+      "precision": 0.11246171150969288,
+      "recall": 0.8994887441246805,
+      "f1": 0.19992687010462704,
+      "roc_auc": 0.9580265420662216
+    },
+    "val": {
+      "accuracy": 0.8724103673613565,
+      "precision": 0.14240841967855103,
+      "recall": 0.8431603417564834,
+      "f1": 0.24366261696512312,
+      "roc_auc": 0.9403373698014581
+    },
+    "confusion_matrix_val": [
+      [
+        1157573,
+        168184
+      ],
+      [
+        5195,
+        27928
+      ]
+    ]
+  }
+}
