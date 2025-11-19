@@ -1,0 +1,47 @@
+# entrega_2/app/docker-compose.yml
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sodai-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../airflow/models:/app/models
+      - ../airflow/data:/app/data
+    environment:
+      - MODEL_PATH=/app/models/xgb_best_model.pkl
+      - DATA_DIR=/app/data
+      - PYTHONUNBUFFERED=1
+    networks:
+      - sodai-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sodai-frontend
+    ports:
+      - "7860:7860"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - sodai-network
+    restart: unless-stopped
+
+networks:
+  sodai-network:
+    driver: bridge
