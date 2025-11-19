@@ -260,7 +260,7 @@ Cada ejecución produce:
 
 ---
 
-## 0️Configuración previa (solo Windows + Docker Desktop con WSL2)
+## Configuración previa (solo Windows + Docker Desktop con WSL2)
 
 Si usas **Docker Desktop en Windows con WSL2**, es crítico aumentar la RAM asignada:
 
