@@ -1,0 +1,6 @@
+# entrega_2/app/frontend/requirements.txt
+
+gradio==4.8.0
+requests==2.31.0
+pandas==2.1.3
+numpy==1.26.2
