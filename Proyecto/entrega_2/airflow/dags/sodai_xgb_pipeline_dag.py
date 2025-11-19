@@ -156,7 +156,7 @@ def check_drift(**context):
         )
     except Exception as e:
         print(
-            f"[check_drift_task] ⚠️ Error al filtrar columnas ({e}). "
+            f"[check_drift_task]  Error al filtrar columnas ({e}). "
             "Se carga df_final completo."
         )
         df_final = pd.read_parquet(df_final_path)
@@ -385,7 +385,7 @@ def predict_next_week(**context):
     # Estadísticas
     n_positivos = (df_pred["pred_binaria"] == 1).sum()
     print(
-        f"[predict_next_week_task] 📊 Predicciones positivas: "
+        f"[predict_next_week_task] Predicciones positivas: "
         f"{n_positivos:,} de {len(df_pred):,} "
         f"({100*n_positivos/len(df_pred):.2f}%)"
     )
