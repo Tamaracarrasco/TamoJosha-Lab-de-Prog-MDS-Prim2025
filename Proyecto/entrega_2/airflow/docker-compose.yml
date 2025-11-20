@@ -12,7 +12,7 @@ x-airflow-common: &airflow-common
     PYTHONPATH: /opt/airflow
     MLFLOW_TRACKING_URI: http://mlflow:5000
 
-    ENVIRONMENT: "dev"  # Cambiar a "dev", "staging" o "prod" según necesidad por costo computacional subsamplea/corre o no optuna
+    ENVIRONMENT: "staging"  # Cambiar a "dev", "staging" o "prod" según necesidad por costo computacional subsamplea/corre o no optuna
   volumes:
     - ./dags:/opt/airflow/dags
     - ./scripts:/opt/airflow/scripts
