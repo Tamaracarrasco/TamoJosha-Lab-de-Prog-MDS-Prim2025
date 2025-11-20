@@ -1,236 +1,310 @@
-# Decisiones tomadas en la entrega 2:
+# Documentación del Pipeline MLOps - SodAI Drinks
 
-## Visión general del proyecto
+## Descripción del DAG
 
-Este proyecto desarrolla un pipeline productivo de Machine Learning utilizando **Apache Airflow** para predecir si un cliente comprará un producto durante la semana siguiente. La solución está diseñada con enfoque **MLOps**, considerando todo el ciclo de vida de un modelo en producción.
+El DAG `sodai_xgb_pipeline` es el pipeline productivo que orquesta todo el flujo de ML para predecir compras de productos por cliente. Está diseñado para ser adaptativo, resiliente y eficiente, combinando detección automática de cambios en los datos con reentrenamiento inteligente.
 
-El sistema incorpora:
+### Tareas del Pipeline
 
-- **Procesamiento incremental de datos**: semana histórica (t) y nueva semana entrante (t+1).
-- **Predicción operativa**: generación de predicciones para la semana siguiente (t+2).
-- **Reentrenamiento condicionado** mediante detección de **data drift** (PSI).
-- **Optimización automática** de hiperparámetros con **Optuna**.
-- **Registro completo** del modelo, métricas y artefactos mediante **MLflow**.
-- **Interpretabilidad** del modelo utilizando **SHAP**.
-- **Estrategia de subsampling** por ambiente (dev/staging/prod).
+#### 1. Extract Data (`extract_data_task`)
 
-El objetivo es emular un entorno productivo real, donde los datos cambian semana a semana y el sistema debe adaptarse, monitorear y entregar predicciones confiables.
+**Funcionalidad:**
+- Valida que existan los archivos base requeridos: `clientes.parquet`, `productos.parquet`, `transacciones.parquet`
+- Busca archivos nuevos que sigan el patrón `transacciones_*.parquet`
+- Marca mediante XCom si hay data nueva disponible
 
----
+**Por qué es importante:**
+Esta tarea me permite saber desde el inicio si tengo nueva información para procesar. Esto determina si voy a generar predicciones para una semana futura o si solo evalúo el modelo actual.
 
-## Estructura del proyecto
+#### 2. Transform Data (`transform_data_task`)
 
-```
-airflow/
-│
-├── dags/
-│   └── sodai_xgb_pipeline_dag.py       # DAG principal del pipeline
-│
-├── scripts/
-│   ├── data_preparation.py             # Limpieza, panel semanal y generación de target
-│   ├── data_io.py                      # Funciones de carga/guardado y wrapper del dataset
-│   ├── modeling_xgb.py                 # XGBoost, Optuna, splits y predicciones
-│   ├── drift.py                        # Detección de drift mediante PSI semanal
-│   ├── shap_utils.py                   # Gráficos de interpretabilidad SHAP
-│   └── mlflow_utils.py                 # Funciones de tracking y registro en MLflow
-│
-├── config/
-│   ├── config.py                       # Rutas, parámetros globales y configuración
-│   └── __init__.py                     # Permite import config as cfg
-│
-├── data/
-│   ├── clientes.parquet                # Dimensión clientes (estática)
-│   ├── productos.parquet               # Dimensión productos (estática)
-│   ├── transacciones.parquet           # Histórico de transacciones (t)
-│   ├── transacciones_2025W01.parquet   # [OPCIONAL] Nueva semana (t+1) en caso que se agregue nueva data
-│   └── df_final_latest.parquet         # [AUTO] Dataset procesado para el modelo
-│
-├── models/
-│   └── xgb_best_model.pkl              # [AUTO] Modelo más reciente entrenado
-│
-├── artifacts/
-│   ├── predictions/
-│   │   ├── predicciones_test.parquet   # [AUTO] Predicciones del set de test
-│   │   └── predicciones_finales.parquet # [AUTO] Predicciones operativas t+2
-│   └── metrics/
-│       ├── shap_summary.png            # [AUTO] Gráfico SHAP summary
-│       └── topN_sample.csv             # [AUTO] Top-N recomendaciones por cliente
-│
-├── logs/                               # [AUTO] Logs de Airflow
-│
-├── docker-compose.yml                  # Configuración de servicios Docker
-├── Dockerfile                          # Imagen de Airflow personalizada
-└── requirements.txt                    # Dependencias Python
-``` 
+**Funcionalidad:**
+- Carga los parquet de clientes, productos y transacciones
+- Concatena archivos nuevos con el histórico si existen
+- Limpia y deduplica transacciones
+- Hace los merge necesarios para tener toda la información consolidada
+- Construye el panel semanal por (cliente, producto, semana)
+- Genera el target `y` = compra en la semana siguiente
+- Expande a cartesiano completo cliente-producto por semana
+- Guarda `df_final_latest.parquet`
 
----
+**Diseño del panel semanal:**
+El panel completo me permite capturar tanto las compras como las no compras (que también es información valiosa). Al tener todas las combinaciones posibles, el modelo aprende patrones temporales más ricos.
 
-# Pipeline
-Se crearon scripts para el levantamiento del pipeline. A continuación se describen a grandes rasgos lo que se espera el script.
+#### 3. Check Drift (`check_drift_task`)
 
-1. ``data_preparation.py``
+**Funcionalidad:**
+- Carga `df_final_latest.parquet`
+- Compara la última semana contra el histórico completo
+- Calcula PSI (Population Stability Index) para features numéricas
+- Si alguna feature tiene PSI > 0.2, marca drift = True
+- Guarda reporte con valores PSI por feature
 
-En este script se definen las siguientes funciones para cumplir lo siguiente: Craga de datos -> limpieza y transformaciones -> generar base de datos de entrega 1 -> generar base de datos para predicciones.
+**Features monitoreadas:**
+- `X`, `Y` - Coordenadas geográficas
+- `size` - Tamaño del producto
+- `num_deliver_per_week`, `num_visit_per_week` - Frecuencia de operación
 
-- **load_raw_data()**: Carga datasets disponibles de cliente.parquet, productos.parquet y transacciones.parquet En caso de que hayan transacciones nuevas, se concatenaran a las transacciones antiguas. 
+**Por qué PSI:**
+Es una métrica estándar para detectar cambios en distribuciones. Un PSI > 0.2 indica que algo cambió significativamente en el comportamiento de los datos, lo que probablemente afectará la efectividad del modelo.
 
-- **cast_and_clean_raw_tables()**: Esta función se encarga de replicar la limpieza y cambios realizados a los datos definidos de la misma forma en la tarea 1, tales como transformar las columans de fechas al formato correspondiente (datetime).
+#### 4. Branch on Drift (`branch_on_drift`)
 
-- **deduplicate_and_fix_transactions()**: Se encarga de eliminar registros duplicados y consolida registros con mina id de clientes, productos, orden y fecha de compra. También se descartan items que presentaban cantidades negativas.
-
-- **build_transaction_level_df()**: genera el merge de transacciones con clientes y productos, aplicando los mismos filtros que en la entrega 1.
-
-- **build_weekly_panel_with_target()**: A partir del df que se obtuvo en la función anterior, se definen columnas de comptra o no en semana t y define variable target en semana t+1. También se agregan características clientes y productos, generando el dataframe final.
-- **build_model_dataset()**: función que define todo el pipeline de preparación, haciendo uso de las funciones anteriormente descritas.
-- **build_next_week_candidates_from_raw()**: Construye el dataset de candidatos para predecir semana t + 2.
-
-
-2. ``drift.py``: En este script se busca aplicar el método univariado de detección de data drifting utilizando PSI.
-La lógica para detectar si hubo data drifting será que en caso de que hayan datos nuevos, lo cual corresponderían a datos de la última semana, esta se compara con toda la data histórica. Se define la función auxiliar **_compute_psi()** que calcula el coeficiente PSI.
-
-Cabe mencionar en este punto la decisión de reentrenamiento:
-- En caso de primera ejecución, se realiza el primer reentrenamiento (por que no existe aún un modelo)
-- Si hay una nueva semana, hay un reentrenamiento.
-- Si hay data drifting, hay reentrenamiento.
-
-3. ``modeling_xgb.py``: En este scripts se definen las funciones principales para realizar el holdout, entrenamiento, optimización de hiperparámetros y predicciones. Se ejecutará la función **train_xgb_predict()** en caso de que se cumpla alguna condición de reentrenamiento. Dependiendo del ambiente, si es developing, staging, se obtendrá una submuestra aleatoria estratificada, por tema de costo computacional.
-
-Se tienen las siguientes funciones:
-- **subsample_dataset()**: se genera submuestra aleatoria.
-
-- **temporal_train_val_test_split()**: holdout considerando que los splits son temporales.
-
-- **tune_hyperparams_optuna()**: Se utiliza optuna para optimizar los mismos hiperparámetros utilizados para XGBClassifier y también el mismo hiperparámetro de OneHotEncoder. Tal como en la entrega 1, esta optimización se realiza maximizando la métrica F1-Score, utilizando el conjunto de validación.
-
-- **build_xgb_best_pipeline():** Se construye el pipeline del modelo considerando los mejores hiperparámetros encontrados.
-
-- **evaluate_and_select_threshold()**: Selecciona el umbral que maximiza F1-Score en el conjunto de validación.
-
-- **predict_test_with_probabilities()**: Se realizan predicciones en el conjunto de test y se genera ranking por cliente/semana.
-
-- **topN_por_cliente_semana()**: Extrae TopN productos por cliente por semana (N = 5) por default.
-
-- **train_xgb_predict()**: función que ejecuta todas las funciones anteriores.
-
-### Extras
-* ``shap_utils.py``: Se obtienen los valores shap para el pipeline del modelo. 
-* ``mlflow_utils.py``: En este script se definen funciones que configuran Mlflow con el tracking URI y el experimento. También se definen funciones que loggean diccionarios para el pipeline, métricas y parámetros.
-* ``data_io.py``: Este script se encarga de extraer los datos crudos disponibles en ../data/ y detecta si hay archivos correspondiente a la data nueva.También guarda las predicciones generadas por el modelo en formato parquet.
-
-### Se recomienda leer el readme.md que se dejó en ../airflow/
-
-------------
-# DESCRIPCIÓN DEL DAG
-
-El dag llamado ``sodai_xgb_pipeline_dag.py`` está ubicado en ../airflow/dags/.
-
-El objetivo principal del dags es cumplir con las siguientes tareas:
-- Detección de nueva data.
-- Detección de drift con PSI.
-- Reentrenamiento condicional.
-- Predicción operativa para t+2.
-- Lazy imports para que el parsing del DAG sea más liviano.
-
-Se definen las siguientes tareas:
-
-- **extract_data_task()**: Se revisa que estén los archivos base y además se marca por si hay una semana nueva (datos nuevos)
-- **transform_data_task()** Esta tarea arma el dataframe final a partir de los datos crudos. En caso de que corresponda, se agrega la nueva semana t+1. También se limpian y transforman los datos, se construye la variable target y se guarda el dataframe más reciente.
-- **check_drift()**: Se revisa si hay data drifting. Se compara la última semana con los datos históricos y si hay data drifting en características numéricas, se guarda un reporte y que marca drift = TRUE.
-- **brach_on_drift()**: Aquí se decide el reentrenamiento bajo las 3 condiciones mencionadas anteriormente.
-- **retrain_model()**: En caso de reentrenamiento, se carga el dataframe final con la variable target y se realiza el holdout, optimización de hiperparámetros con optuna, se busca el mejor umbral, evaluación en conjunto test y se registra todo en MLFLOW. Se guarda el mejor modelo con su umbral y las predicciones en el conjunto test.
-- **predict_next_week()**: Esta tareagenera las predicciones para la semana t + 2. Para ello se carga el modelo con su umbral. Se arman los candidatos desde los datos crudos, se calculan las probabilidades y a partir del umbral, se realiza el ranking por clientes y se guardan las predicciones  finales en formato parquet.
-
-
-## Definición del DAG
-
-Se define el dag con los siguientes parámetros:
-- dag_id: identificador único del DAG en Airflow.
-
-- description: descripción que sale en la UI.
-
-- default_args: aplicados por defecto a cada tarea.
-
-- schedule_interval=None: ejecución manual
-
-- start_date = datetime(2025,1,1): fecha de inicio del DAG. 
-
-- catchup=False: no hacer catchup (no ejecutar runs pendientes del pasado).
-
-- tags: etiquetas para filtrar en UI.
-
-### Operadores
-
-- **extract_data**: Ejecuta la función extract_data_task(), cuyo propósito es comprobar los archivos base y verificar si hay datos nuevos.
-- **transform_data**: Ejecuta la función transform_data_task(). EL propósito es leer los datos.parquet crudos, aplica limpieza, trasnformación de los datos y escribe el df_final listo para que el modelo lo use.
-- **check_drift_task**: Ejecuta la función check_drift() para checkear el data drifting.
-- **branch_task**: Operador tpo branch. Este operador retorna el task_id para ejecutar las tareas a continuación, en particular, mirando las condiciones de reentrenamiento:
-    - Si no hay modelo guardado $\rightarrow$ retornar "retrain_model_task".
-    - Si hay drift y hay data nueva $\rightarrow$ "retrain_model_task".
-    - Si no hay drift o no hay data nueva $\rightarrow$ "skip_retrain".
-- **retrain_model_task**: Este operador se encarga del entrenamiento con el modelo XGBoost, Otimización de Hiperparams con Optuna, registra run con mlflow y se guardan artefactos (modelo, métricas, predicciones)
-
-- **skip_retrain**: Empty operator que sirve para representar la rama donde no se va a reentrenar.
-
-- **predict_next_week_task**: genera las predicciones para la semana t + 2 y las guarda en archivo.parquet.
-Acá es importante destacar la trigger_rule ``TriggerRule.NONE_FAILED_MIN_ONE_SUCCESS``; La tarea se ejecutará si ninguna de las tareas anteriores falló y si al menos una tuvo éxito.
-
-El razonamiento lo planteamos así: como **predict_next_week_task** tiene los tareas anteriores (**retrain_model_taks** y **skip_retrain**) y una de esas ramas será marcada como skipped por **branch_task**. Luego por la trigger rule definida, se asegura que si una tarea fue skipeada y la otra fue exitosa, la tarea corre.
-
-## Diagrama DAG
-
-Acá se muestra el diagrama del DAG
-
-```text
-┌───────────────────────────┐
-│       Extract Data        │
-│  - Validar archivos       │
-│  - Detectar nuevos        │
-└──────────────┬────────────┘
-               │
-               ▼
-┌───────────────────────────┐
-│       Transform Data      │
-│  - Cargar parquets        │
-│  - Limpiar / dedup        │
-│  - Panel semanal          │
-│  - Target                 │
-└──────────────┬────────────┘
-               │
-               ▼
-┌───────────────────────────┐
-│        Check Drift        │
-│  - PSI última semana      │
-│  - vs histórico           │
-└──────────────┬────────────┘
-               │
-               ▼
-┌───────────────────────────┐
-│      Branch on Drift      │
-│       ¿Reentrenar?        │
-└───────────┬───────┬───────┘
-            │       │
-            │ NO    │ SÍ
-            │       │
-            ▼       ▼
-┌────────────────┐  ┌─────────────────────────┐
-│     Skip       │  │     Retrain Model       │
-│    Retrain     │  │  - Optuna               │
-└───────┬────────┘  │  - XGBoost              │
-        │           │  - Threshold tuning     │
-        │           │  - MLflow logging       │
-        │           └───────────┬─────────────┘
-        │                       │
-        └──────────────┬────────┘
-                       │
-                       ▼
-        ┌───────────────────────────┐
-        │     Predict Next Week     │
-        │  - Candidatos t+2         │
-        │  - Scoring                │
-        │  - Ranking                │
-        └───────────────────────────┘
+**Funcionalidad:**
+Decide si es necesario reentrenar evaluando tres condiciones:
+```python
+SI no existe modelo previo:
+    → REENTRENAR (primera ejecución)
+    
+SI llegó data nueva:
+    → REENTRENAR (incorporar nueva información)
+    
+SI detecté drift:
+    → REENTRENAR (distribuciones cambiaron)
+    
+SINO:
+    → SKIP (modelo sigue vigente)
 ```
 
-## Representación visual del DAG en la interfaz de Airflow.
+**Lógica de decisión:**
+El balance entre eficiencia y actualidad. Reentreno solo cuando tiene sentido: primera vez, nueva información disponible, o cuando el mundo cambió (drift). Si nada cambió, uso el modelo existente y ahorro recursos.
 
-<img src="../airflow/pipeline_airflow_dag.png">
+#### 5. Retrain Model (`retrain_model_task`)
+
+**Funcionalidad:**
+- Aplica subsampling según ambiente (dev/staging/prod)
+- Split temporal: 36 semanas train, 11 val, resto test
+- Optimiza hiperparámetros con Optuna (si está habilitado)
+- Entrena XGBoost con pipeline completo
+- Busca threshold óptimo que maximiza F1 en validación
+- Evalúa en test
+- Calcula SHAP values para interpretabilidad
+- Registra todo en MLflow
+- Guarda modelo + threshold en `xgb_best_model.pkl`
+
+**Pipeline de features:**
+```
+Numéricas → Imputer + StandardScaler
+Categóricas → OneHotEncoder (con min_frequency optimizable)
+IDs → Drop
+```
+
+#### 6. Skip Retrain (`skip_retrain`)
+
+Tarea vacía que representa la rama donde no se reentrena. Marca que el modelo actual sigue siendo válido.
+
+#### 7. Predict Next Week (`predict_next_week_task`)
+
+**Funcionalidad:**
+- Carga modelo y threshold desde `xgb_best_model.pkl`
+- Construye candidatos para semana t+2
+- Calcula probabilidades de compra
+- Aplica threshold para predicciones binarias
+- Rankea productos por cliente según probabilidad
+- Guarda `predicciones_finales.parquet`
+
+**Trigger Rule:**
+Usa `TriggerRule.NONE_FAILED_MIN_ONE_SUCCESS` porque una de las ramas anteriores (retrain o skip) será marcada como skipped por el branch. Esta regla asegura que la tarea corre si al menos una rama fue exitosa.
+
+## Diagrama de Flujo del Pipeline
+```
+┌─────────────────────┐
+│  Extract Data       │
+│  - Validar archivos │
+│  - Detectar nuevos  │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Transform Data     │
+│  - Cargar parquets  │
+│  - Limpiar/dedup    │
+│  - Panel semanal    │
+│  - Target y         │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Check Drift        │
+│  - PSI última sem   │
+│  - vs histórico     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Branch on Drift    │
+│  ¿Reentrenar?       │
+└─────┬─────────┬─────┘
+      │         │
+      │ NO      │ SÍ
+      │         │
+      ▼         ▼
+┌──────────┐ ┌──────────────────┐
+│   Skip   │ │  Retrain Model   │
+│ Retrain  │ │  - Optuna        │
+└────┬─────┘ │  - XGBoost       │
+     │       │  - Threshold     │
+     │       │  - MLflow        │
+     │       └────────┬─────────┘
+     │                │
+     └────────┬───────┘
+              │
+              ▼
+    ┌─────────────────────┐
+    │  Predict Next Week  │
+    │  - Candidatos t+2   │
+    │  - Scoring          │
+    │  - Ranking          │
+    └─────────────────────┘
+```
+
+## Representación Visual en Airflow
+
+![DAG en Airflow UI](pipeline_airflow_dag.png)
+
+La interfaz muestra el grafo completo con las 7 tareas conectadas. Se puede ver claramente cómo `retrain_model_task` y `skip_retrain` son ramas paralelas después del branch, y ambas convergen en `predict_next_week_task`.
+
+## Integración de Datos Futuros, Detección de Drift y Reentrenamiento
+
+### Integración de Datos Futuros
+
+El pipeline está diseñado para recibir nuevas semanas de transacciones de forma incremental sin modificar código.
+
+**Convención de archivos:**
+- Histórico base: `transacciones.parquet`
+- Nuevas semanas: `transacciones_*.parquet` (ej: `transacciones_2024_w52.parquet`)
+- Ubicación: `/airflow/data/`
+
+**Flujo de detección:**
+
+Cuando corro el DAG, `extract_data_task` lista los archivos y busca el patrón `transacciones_*`. Si encuentra alguno, marca vía XCom que hay data nueva.
+
+En `transform_data_task`, si hay archivo nuevo, lo concateno con el histórico:
+```python
+if new_transactions_filename is not None:
+    transacciones_new = pd.read_parquet(extra_path)
+    transacciones = pd.concat([transacciones_hist, transacciones_new], ignore_index=True)
+else:
+    transacciones = transacciones_hist
+```
+
+Después aplico las mismas transformaciones al dataset completo. El panel semanal se expande automáticamente para incluir la nueva semana con todas las combinaciones cliente-producto.
+
+**Ventajas del diseño:**
+- Solo deposito el archivo nuevo, sin cambiar código
+- Detección automática
+- El histórico nunca se modifica
+- Puedo procesar múltiples semanas nuevas a la vez
+
+### Detección de Drift
+
+Uso PSI (Population Stability Index) para detectar cuándo las distribuciones de las features cambiaron significativamente.
+
+**Qué es drift:**
+Cambios en las distribuciones que indican que el comportamiento del negocio está cambiando. Por ejemplo: clientes pidiendo productos más grandes, cambios geográficos en demanda, modificaciones en frecuencia de visitas.
+
+**Proceso de detección:**
+
+1. Separo: histórico (todas las semanas menos la última) vs nueva (última semana)
+2. Calculo PSI para cada feature numérica relevante
+3. Si alguna tiene PSI ≥ 0.2 → drift detectado
+
+**Features monitoreadas:**
+```python
+numeric_features = [
+    "X", "Y",                      # Coordenadas geográficas
+    "size",                        # Tamaño del producto
+    "num_deliver_per_week",        # Frecuencia de entregas
+    "num_visit_per_week",          # Frecuencia de visitas
+]
+```
+
+Elegí estas porque pueden cambiar por factores externos: expansión geográfica, cambios operativos, preferencias de mercado.
+
+**Cálculo del PSI:**
+
+1. Divido el rango en 10 buckets según cuantiles del histórico
+2. Calculo % de datos en cada bucket para histórico y nueva semana
+3. PSI = Σ (% histórico - % nuevo) × ln(% histórico / % nuevo)
+
+PSI ≥ 0.2 es el umbral estándar de la industria para cambio significativo.
+
+**Ventajas del PSI:**
+- No necesito labels
+- Sensible a cambios en la forma de la distribución
+- Umbrales bien establecidos
+- Computacionalmente barato
+
+**Reporte completo:**
+Además de la flag drift sí/no, guardo:
+- PSI de cada feature
+- Semanas comparadas
+- Tamaño de los grupos
+- Umbral usado
+
+### Lógica de Reentrenamiento
+
+La decisión está en `branch_on_drift` con tres triggers:
+```python
+# Caso 1: No existe modelo
+if not model_exists:
+    return "retrain_model_task"
+
+# Caso 2: Nueva data
+if has_new_data:
+    return "retrain_model_task"
+
+# Caso 3: Drift detectado
+if drift_flag:
+    return "retrain_model_task"
+
+# Caso 4: Modelo vigente
+return "skip_retrain"
+```
+
+**Razonamiento:**
+
+**Caso 1 - No existe modelo:**
+Primera ejecución, necesito modelo inicial.
+
+**Caso 2 - Nueva data:**
+Decidí reentrenar siempre con nueva data porque:
+- Patrones recientes son más informativos en series de tiempo
+- Cada semana nueva da ejemplos que el modelo no vio
+- El costo es manejable con los ambientes configurables
+- Más conservador: prefiero modelo actualizado que arriesgarme a que quede obsoleto
+
+**Caso 3 - Drift:**
+Si las distribuciones cambiaron, el modelo predice sobre un mundo diferente. Reentrenar es necesario para mantener calidad.
+
+**Caso 4 - Vigente:**
+Sin cambios, uso el modelo actual. Ahorro recursos sin sacrificar calidad.
+
+**Ventana temporal:**
+```
+Train: primeras 36 semanas
+Val: siguientes 11 semanas
+Test: resto
+```
+
+Simula el escenario real: entreno con pasado, ajusto con periodo intermedio, evalúo en futuro reciente. Cuando llega nueva data, la ventana se desliza naturalmente.
+
+**Optimización por ambiente:**
+```
+DEV: Hiperparámetros fijos (rápido)
+STAGING: Optuna 20 trials (balance)
+PROD: Optuna 30 trials (mejor modelo)
+```
+
+**Threshold dinámico:**
+No solo reentreno el modelo, también recalculo el threshold óptimo. Barrido de 40 valores entre 0.05 y 0.80, elijo el que maximiza F1 en validación.
+
+**Beneficios del diseño completo:**
+
+1. **Automatización** - No decido manualmente cuándo reentrenar
+2. **Adaptabilidad** - Se ajusta solo a cambios
+3. **Eficiencia** - No desperdicio recursos
+4. **Trazabilidad** - Cada decisión queda registrada
+5. **Flexibilidad** - Fácil agregar más condiciones
+
+El diseño es conservador pero no paranoico. Reentreno cuando tiene sentido, reacciono a cambios, pero no en cada ejecución innecesariamente.
