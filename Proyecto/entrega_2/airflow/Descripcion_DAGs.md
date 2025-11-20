@@ -233,4 +233,4 @@ Acá se muestra el diagrama del DAG
 
 ## Representación visual del DAG en la interfaz de Airflow.
 
-<img src="../entrega_2/pipeline_airflow_dag.png">
+<img src="../airflow/pipeline_airflow_dag.png">
