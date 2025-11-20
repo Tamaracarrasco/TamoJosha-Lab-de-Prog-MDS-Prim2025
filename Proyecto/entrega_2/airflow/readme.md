@@ -201,6 +201,7 @@ docker-compose down
 
 # Reconstruir y levantar
 docker-compose build --no-cache
+docker-compose up mlflow-init
 docker-compose up -d
 ```
 
