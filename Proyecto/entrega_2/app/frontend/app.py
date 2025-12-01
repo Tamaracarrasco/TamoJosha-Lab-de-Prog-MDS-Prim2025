@@ -123,22 +123,24 @@ def predecir_batch(archivo) -> Tuple[pd.DataFrame, str, str]:
                 'Interpretación'
             ]
             
-            # CSV para descargar (solo customer_id y product_id, sin encabezados)
-            df_descarga = df_resultados[['customer_id', 'product_id']].copy()
+            # CSV para descargar (solo customer_id y product_id de predicciones POSITIVAS, sin encabezados)
+            df_descarga = df_resultados[df_resultados['prediccion'] == 1][['customer_id', 'product_id']].copy()
             temp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.csv')
             df_descarga.to_csv(temp_file.name, index=False, header=False)
             temp_file.close()
+            
+            predicciones_positivas = (df_display['Predicción'] == 'SÍ COMPRARÁ').sum()
             
             resumen = f"""
 ## Resumen de Predicciones
 
 **Total de predicciones:** {len(df_resultados)}  
-**Predicciones positivas:** {(df_display['Predicción'] == 'SÍ COMPRARÁ').sum()}  
-**Predicciones negativas:** {(df_display['Predicción'] == 'NO COMPRARÁ').sum()}  
+**Predicciones positivas (SÍ COMPRARÁ):** {predicciones_positivas}  
+**Predicciones negativas (NO COMPRARÁ):** {(df_display['Predicción'] == 'NO COMPRARÁ').sum()}  
 **Probabilidad promedio:** {df_display['Probabilidad (%)'].mean():.2f}%
 
 ---
-*Usa el botón "Descargar CSV" para obtener el archivo con customer_id y product_id*
+*El CSV descargable contiene solo las {predicciones_positivas} duplas customer-product con predicción positiva*
             """
             
             return df_display, resumen, temp_file.name
@@ -267,7 +269,7 @@ with gr.Blocks(
         # Botón de descarga CSV
         with gr.Row():
             download_btn = gr.DownloadButton(
-                label="📥 Descargar CSV (customer_id, product_id)",
+                label="📥 Descargar CSV (Solo predicciones positivas)",
                 visible=False
             )
         
@@ -296,7 +298,8 @@ with gr.Blocks(
             - Asegúrate de que el archivo CSV tenga las columnas `customer_id` y `product_id`
             - Los IDs deben ser cadenas de texto o números
             - No hay límite en el número de predicciones, pero archivos muy grandes pueden tardar más
-            - El archivo descargado contendrá solo `customer_id` y `product_id` (sin encabezados)
+            - El archivo descargado contendrá **solo las duplas con predicción positiva** (SÍ COMPRARÁ)
+            - El formato del CSV es: `customer_id,product_id` (sin encabezados)
             """
         )
     
