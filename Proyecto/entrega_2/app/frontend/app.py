@@ -6,6 +6,7 @@ import pandas as pd
 import os
 from typing import List, Tuple
 import json
+import tempfile
 
 BACKEND_URL = os.getenv('BACKEND_URL', 'http://backend:8000')
 
@@ -23,20 +24,20 @@ def verificar_conexion_backend() -> Tuple[bool, str]:
     except requests.exceptions.RequestException as e:
         return False, f"No se pudo conectar con el backend: {str(e)}"
 
-def predecir_individual(cliente_id: str, producto_id: str) -> str:
-    if not cliente_id or not producto_id:
+def predecir_individual(customer_id: str, product_id: str) -> str:
+    if not customer_id or not product_id:
         return "Por favor, ingresa tanto el ID del cliente como el ID del producto."
     
     try:
         # Convertir a string y limpiar espacios
-        cliente_id_str = str(cliente_id).strip()
-        producto_id_str = str(producto_id).strip()
+        customer_id_str = str(customer_id).strip()
+        product_id_str = str(product_id).strip()
         
         response = requests.post(
             f"{BACKEND_URL}/prediccion",
             json={
-                "cliente_id": cliente_id_str,
-                "producto_id": producto_id_str
+                "customer_id": customer_id_str,
+                "product_id": product_id_str
             },
             timeout=30
         )
@@ -47,8 +48,8 @@ def predecir_individual(cliente_id: str, producto_id: str) -> str:
             resultado = f"""
 ## Resultado de la Predicción
 
-**Cliente ID:** {data['cliente_id']}  
-**Producto ID:** {data['producto_id']}
+**Customer ID:** {data['customer_id']}  
+**Product ID:** {data['product_id']}
 
 ---
 
@@ -74,21 +75,21 @@ def predecir_individual(cliente_id: str, producto_id: str) -> str:
     except Exception as e:
         return f"Error inesperado: {str(e)}"
 
-def predecir_batch(archivo) -> Tuple[pd.DataFrame, str]:
+def predecir_batch(archivo) -> Tuple[pd.DataFrame, str, str]:
     if archivo is None:
-        return None, "Por favor, sube un archivo CSV con las columnas: cliente_id, producto_id"
+        return None, "Por favor, sube un archivo CSV con las columnas: customer_id, product_id", None
     
     try:
         df = pd.read_csv(archivo.name)
         
-        if 'cliente_id' not in df.columns or 'producto_id' not in df.columns:
-            return None, "El archivo debe contener las columnas: cliente_id y producto_id"
+        if 'customer_id' not in df.columns or 'product_id' not in df.columns:
+            return None, "El archivo debe contener las columnas: customer_id y product_id", None
         
         # Convertir IDs a strings (importante para compatibilidad con el backend)
-        df['cliente_id'] = df['cliente_id'].astype(str).str.strip()
-        df['producto_id'] = df['producto_id'].astype(str).str.strip()
+        df['customer_id'] = df['customer_id'].astype(str).str.strip()
+        df['product_id'] = df['product_id'].astype(str).str.strip()
         
-        datos = df[['cliente_id', 'producto_id']].to_dict('records')
+        datos = df[['customer_id', 'product_id']].to_dict('records')
         
         response = requests.post(
             f"{BACKEND_URL}/prediccion/batch",
@@ -105,40 +106,47 @@ def predecir_batch(archivo) -> Tuple[pd.DataFrame, str]:
             )
             df_resultados['probabilidad_porcentaje'] = (df_resultados['probabilidad'] * 100).round(2)
             
-            df_resultados = df_resultados[[
-                'cliente_id', 
-                'producto_id', 
+            # DataFrame para mostrar en la UI
+            df_display = df_resultados[[
+                'customer_id', 
+                'product_id', 
                 'prediccion_texto', 
                 'probabilidad_porcentaje',
                 'interpretacion'
-            ]]
+            ]].copy()
             
-            df_resultados.columns = [
-                'Cliente ID',
-                'Producto ID', 
+            df_display.columns = [
+                'Customer ID',
+                'Product ID', 
                 'Predicción',
                 'Probabilidad (%)',
                 'Interpretación'
             ]
             
+            # CSV para descargar (solo customer_id y product_id, sin encabezados)
+            df_descarga = df_resultados[['customer_id', 'product_id']].copy()
+            temp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.csv')
+            df_descarga.to_csv(temp_file.name, index=False, header=False)
+            temp_file.close()
+            
             resumen = f"""
 ## Resumen de Predicciones
 
 **Total de predicciones:** {len(df_resultados)}  
-**Predicciones positivas:** {(df_resultados['Predicción'] == 'SÍ COMPRARÁ').sum()}  
-**Predicciones negativas:** {(df_resultados['Predicción'] == 'NO COMPRARÁ').sum()}  
-**Probabilidad promedio:** {df_resultados['Probabilidad (%)'].mean():.2f}%
+**Predicciones positivas:** {(df_display['Predicción'] == 'SÍ COMPRARÁ').sum()}  
+**Predicciones negativas:** {(df_display['Predicción'] == 'NO COMPRARÁ').sum()}  
+**Probabilidad promedio:** {df_display['Probabilidad (%)'].mean():.2f}%
 
 ---
-*Puedes descargar los resultados completos usando el botón de descarga*
+*Usa el botón "Descargar CSV" para obtener el archivo con customer_id y product_id*
             """
             
-            return df_resultados, resumen
+            return df_display, resumen, temp_file.name
         else:
-            return None, f"Error al obtener predicciones: {response.json().get('detail', 'Error desconocido')}"
+            return None, f"Error al obtener predicciones: {response.json().get('detail', 'Error desconocido')}", None
             
     except Exception as e:
-        return None, f"Error al procesar el archivo: {str(e)}"
+        return None, f"Error al procesar el archivo: {str(e)}", None
 
 def obtener_info_modelo() -> str:
     try:
@@ -192,13 +200,13 @@ with gr.Blocks(
         
         with gr.Row():
             with gr.Column():
-                cliente_input = gr.Textbox(
-                    label="ID del Cliente",
+                customer_input = gr.Textbox(
+                    label="Customer ID",
                     placeholder="Ejemplo: CLI001234",
                     info="Ingresa el identificador único del cliente"
                 )
-                producto_input = gr.Textbox(
-                    label="ID del Producto",
+                product_input = gr.Textbox(
+                    label="Product ID",
                     placeholder="Ejemplo: PRO005678",
                     info="Ingresa el identificador único del producto"
                 )
@@ -209,7 +217,7 @@ with gr.Blocks(
         
         predecir_btn.click(
             fn=predecir_individual,
-            inputs=[cliente_input, producto_input],
+            inputs=[customer_input, product_input],
             outputs=resultado_individual
         )
         
@@ -228,11 +236,11 @@ with gr.Blocks(
             """
             ## Predicción para Múltiples Cliente-Producto
             
-            Sube un archivo CSV con las columnas `cliente_id` y `producto_id` para obtener predicciones masivas.
+            Sube un archivo CSV con las columnas `customer_id` y `product_id` para obtener predicciones masivas.
             El archivo debe tener el siguiente formato:
             
             ```
-            cliente_id,producto_id
+            customer_id,product_id
             12345,67890
             23456,78901
             34567,89012
@@ -256,20 +264,39 @@ with gr.Blocks(
         
         resumen_batch = gr.Markdown(label="Resumen")
         
+        # Botón de descarga CSV
+        with gr.Row():
+            download_btn = gr.DownloadButton(
+                label="📥 Descargar CSV (customer_id, product_id)",
+                visible=False
+            )
+        
+        # Estado para guardar el archivo temporal
+        csv_file_state = gr.State()
+        
+        def actualizar_descarga(df, resumen, csv_path):
+            if csv_path is not None:
+                return df, resumen, gr.DownloadButton(visible=True, value=csv_path), csv_path
+            return df, resumen, gr.DownloadButton(visible=False), None
+        
         predecir_batch_btn.click(
             fn=predecir_batch,
             inputs=archivo_input,
-            outputs=[resultado_batch, resumen_batch]
+            outputs=[resultado_batch, resumen_batch, csv_file_state]
+        ).then(
+            fn=actualizar_descarga,
+            inputs=[resultado_batch, resumen_batch, csv_file_state],
+            outputs=[resultado_batch, resumen_batch, download_btn, csv_file_state]
         )
         
         gr.Markdown(
             """
             ### Consejos para predicciones por lotes:
             
-            - Asegúrate de que el archivo CSV tenga las columnas correctas
-            - Los IDs deben ser números enteros
+            - Asegúrate de que el archivo CSV tenga las columnas `customer_id` y `product_id`
+            - Los IDs deben ser cadenas de texto o números
             - No hay límite en el número de predicciones, pero archivos muy grandes pueden tardar más
-            - Puedes descargar los resultados usando el botón de exportación en la tabla
+            - El archivo descargado contendrá solo `customer_id` y `product_id` (sin encabezados)
             """
         )
     
@@ -320,17 +347,18 @@ with gr.Blocks(
             
             ### Predicción Individual
             1. Ve a la pestaña "Predicción Individual"
-            2. Ingresa el ID del cliente en el primer campo
-            3. Ingresa el ID del producto en el segundo campo
+            2. Ingresa el Customer ID en el primer campo
+            3. Ingresa el Product ID en el segundo campo
             4. Haz clic en "Realizar Predicción"
             5. Observa los resultados que incluyen la predicción, probabilidad e interpretación
             
             ### Predicción por Lotes
-            1. Prepara un archivo CSV con las columnas `cliente_id` y `producto_id`
+            1. Prepara un archivo CSV con las columnas `customer_id` y `product_id`
             2. Ve a la pestaña "Predicción por Lotes"
             3. Sube tu archivo CSV usando el botón de carga
             4. Haz clic en "Realizar Predicciones por Lote"
-            5. Revisa los resultados en la tabla y descárgalos si lo necesitas
+            5. Revisa los resultados en la tabla
+            6. Usa el botón "Descargar CSV" para obtener el archivo con `customer_id` y `product_id` (sin encabezados)
             
             ### Información del Modelo
             1. Ve a la pestaña "Información del Modelo"
@@ -348,6 +376,10 @@ with gr.Blocks(
             **¿Con qué frecuencia se actualiza el modelo?**  
             El modelo se reentrena automáticamente cuando se detecta drift en los datos o de forma periódica 
             según la configuración del pipeline.
+            
+            **¿Qué formato tiene el CSV descargable?**  
+            El CSV descargable contiene solo dos columnas (`customer_id` y `product_id`) sin encabezados, 
+            listo para ser usado en otros sistemas.
             
             **¿Qué hago si obtengo un error?**  
             Verifica que los IDs sean válidos y que el backend esté funcionando correctamente. Si el problema 
