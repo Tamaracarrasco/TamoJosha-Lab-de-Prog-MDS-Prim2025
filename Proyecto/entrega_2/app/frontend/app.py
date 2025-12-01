@@ -37,8 +37,8 @@ def predecir_individual(customer_id: str, product_id: str) -> str:
             json={
                 "customer_id": customer_id_str,
                 "product_id": product_id_str
-            },
-            timeout=1001
+            }
+           # timeout=1001
         )
         
         if response.status_code == 200:
@@ -93,7 +93,7 @@ def predecir_batch(archivo) -> Tuple[pd.DataFrame, str, str]:
         response = requests.post(
             f"{BACKEND_URL}/prediccion/batch",
             json={"datos": datos},
-            timeout=60
+            timeout=10000000
         )
         
         if response.status_code == 200:
