@@ -28,34 +28,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class ClienteProducto(BaseModel):
-    cliente_id: str = Field(..., description="ID del cliente")
-    producto_id: str = Field(..., description="ID del producto")
+class CustomerProduct(BaseModel):
+    customer_id: str = Field(..., description="ID del cliente")
+    product_id: str = Field(..., description="ID del producto")
     
     class Config:
         json_schema_extra = {
             "example": {
-                "cliente_id": "12345",
-                "producto_id": "67890"
+                "customer_id": "12345",
+                "product_id": "67890"
             }
         }
 
 class PrediccionRequest(BaseModel):
-    datos: List[ClienteProducto] = Field(..., description="Lista de pares cliente-producto")
+    datos: List[CustomerProduct] = Field(..., description="Lista de pares customer-product")
     
     class Config:
         json_schema_extra = {
             "example": {
                 "datos": [
-                    {"cliente_id": "12345", "producto_id": "67890"},
-                    {"cliente_id": "23456", "producto_id": "78901"}
+                    {"customer_id": "12345", "product_id": "67890"},
+                    {"customer_id": "23456", "product_id": "78901"}
                 ]
             }
         }
 
 class PrediccionResponse(BaseModel):
-    cliente_id: str
-    producto_id: str
+    customer_id: str
+    product_id: str
     prediccion: int
     probabilidad: float
     interpretacion: str
@@ -199,8 +199,8 @@ async def obtener_info_modelo():
     return modelo_info
 
 def preparar_features_para_prediccion(
-    cliente_id: str,
-    producto_id: str
+    customer_id: str,
+    product_id: str
 ) -> pd.DataFrame:
     """
     Preparo un DataFrame con todas las features que espera el modelo XGBoost.
@@ -213,19 +213,19 @@ def preparar_features_para_prediccion(
             detail="Datos dimensionales no disponibles. El backend necesita acceso a clientes.parquet y productos.parquet"
         )
     
-    cliente_info = clientes_df[clientes_df['customer_id'] == cliente_id]
-    producto_info = productos_df[productos_df['product_id'] == producto_id]
+    cliente_info = clientes_df[clientes_df['customer_id'] == customer_id]
+    producto_info = productos_df[productos_df['product_id'] == product_id]
     
     if cliente_info.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"Cliente {cliente_id} no encontrado en la base de datos"
+            detail=f"Cliente {customer_id} no encontrado en la base de datos"
         )
     
     if producto_info.empty:
         raise HTTPException(
             status_code=404,
-            detail=f"Producto {producto_id} no encontrado en la base de datos"
+            detail=f"Producto {product_id} no encontrado en la base de datos"
         )
     
     cliente_info = cliente_info.iloc[0]
@@ -235,8 +235,8 @@ def preparar_features_para_prediccion(
     semana_str = f"{semana_actual.year}-{int(semana_actual.week):02d}"
     
     features = {
-        'customer_id': str(cliente_id),
-        'product_id': str(producto_id),
+        'customer_id': str(customer_id),
+        'product_id': str(product_id),
         'semana': semana_str,
         'purchased_count': 0,
         'compra_o_no': 0,
@@ -276,7 +276,7 @@ def interpretar_prediccion(probabilidad: float) -> str:
         return "Muy baja probabilidad de compra - Cliente no muestra interés"
 
 @app.post("/prediccion", response_model=PrediccionResponse)
-async def realizar_prediccion(item: ClienteProducto):
+async def realizar_prediccion(item: CustomerProduct):
     if pipeline_xgb is None:
         raise HTTPException(
             status_code=503,
@@ -284,7 +284,7 @@ async def realizar_prediccion(item: ClienteProducto):
         )
     
     try:
-        X = preparar_features_para_prediccion(item.cliente_id, item.producto_id)
+        X = preparar_features_para_prediccion(item.customer_id, item.product_id)
         
         proba = pipeline_xgb.predict_proba(X)[0, 1]
         
@@ -293,8 +293,8 @@ async def realizar_prediccion(item: ClienteProducto):
         interpretacion = interpretar_prediccion(proba)
         
         return PrediccionResponse(
-            cliente_id=item.cliente_id,
-            producto_id=item.producto_id,
+            customer_id=item.customer_id,
+            product_id=item.product_id,
             prediccion=int(prediccion),
             probabilidad=round(float(proba), 4),
             interpretacion=interpretacion
@@ -327,14 +327,14 @@ async def realizar_prediccion_batch(request: PrediccionRequest):
         
         for item in request.datos:
             try:
-                X = preparar_features_para_prediccion(item.cliente_id, item.producto_id)
+                X = preparar_features_para_prediccion(item.customer_id, item.product_id)
                 dfs_features.append(X)
                 items_validos.append(item)
             except HTTPException as e:
-                logger.warning(f"Cliente {item.cliente_id} o producto {item.producto_id} no encontrado: {e.detail}")
+                logger.warning(f"Customer {item.customer_id} o producto {item.product_id} no encontrado: {e.detail}")
                 resultados.append(PrediccionResponse(
-                    cliente_id=item.cliente_id,
-                    producto_id=item.producto_id,
+                    customer_id=item.customer_id,
+                    product_id=item.product_id,
                     prediccion=0,
                     probabilidad=0.0,
                     interpretacion="Error: Cliente o producto no encontrado"
@@ -350,8 +350,8 @@ async def realizar_prediccion_batch(request: PrediccionRequest):
                 interpretacion = interpretar_prediccion(proba)
                 
                 resultados.append(PrediccionResponse(
-                    cliente_id=item.cliente_id,
-                    producto_id=item.producto_id,
+                    customer_id=item.customer_id,
+                    product_id=item.product_id,
                     prediccion=int(prediccion),
                     probabilidad=round(float(proba), 4),
                     interpretacion=interpretacion
