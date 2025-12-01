@@ -38,7 +38,7 @@ def predecir_individual(customer_id: str, product_id: str) -> str:
                 "customer_id": customer_id_str,
                 "product_id": product_id_str
             },
-            timeout=1000
+            timeout=1001
         )
         
         if response.status_code == 200:
