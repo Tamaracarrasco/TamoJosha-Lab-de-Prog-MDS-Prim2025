@@ -6,7 +6,6 @@ import pandas as pd
 import os
 from typing import List, Tuple
 import json
-import tempfile
 
 BACKEND_URL = os.getenv('BACKEND_URL', 'http://backend:8000')
 
@@ -39,7 +38,7 @@ def predecir_individual(customer_id: str, product_id: str) -> str:
                 "customer_id": customer_id_str,
                 "product_id": product_id_str
             },
-            timeout=30
+            timeout=1000
         )
         
         if response.status_code == 200:
@@ -94,7 +93,7 @@ def predecir_batch(archivo) -> Tuple[pd.DataFrame, str, str]:
         response = requests.post(
             f"{BACKEND_URL}/prediccion/batch",
             json={"datos": datos},
-            timeout=1000
+            timeout=60
         )
         
         if response.status_code == 200:
