@@ -6,7 +6,6 @@ import pandas as pd
 import os
 from typing import List, Tuple
 import json
-import tempfile
 
 BACKEND_URL = os.getenv('BACKEND_URL', 'http://backend:8000')
 
@@ -39,7 +38,7 @@ def predecir_individual(customer_id: str, product_id: str) -> str:
                 "customer_id": customer_id_str,
                 "product_id": product_id_str
             },
-            timeout=30
+            timeout=1001
         )
         
         if response.status_code == 200:
@@ -106,7 +105,7 @@ def predecir_batch(archivo) -> Tuple[pd.DataFrame, str, str]:
             )
             df_resultados['probabilidad_porcentaje'] = (df_resultados['probabilidad'] * 100).round(2)
             
-            # DataFrame para mostrar en la UI
+            # DataFrame para mostrar en la UI (con todos los detalles)
             df_display = df_resultados[[
                 'customer_id', 
                 'product_id', 
@@ -123,27 +122,23 @@ def predecir_batch(archivo) -> Tuple[pd.DataFrame, str, str]:
                 'Interpretación'
             ]
             
-            # CSV para descargar (solo customer_id y product_id de predicciones POSITIVAS, sin encabezados)
-            df_descarga = df_resultados[df_resultados['prediccion'] == 1][['customer_id', 'product_id']].copy()
-            temp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.csv')
-            df_descarga.to_csv(temp_file.name, index=False, header=False)
-            temp_file.close()
-            
-            predicciones_positivas = (df_display['Predicción'] == 'SÍ COMPRARÁ').sum()
+            # CSV para descargar (customer_id, product_id y prediccion, sin encabezados)
+            df_descarga = df_resultados[['customer_id', 'product_id', 'prediccion']].copy()
+            csv_string = df_descarga.to_csv(index=False, header=False)
             
             resumen = f"""
 ## Resumen de Predicciones
 
 **Total de predicciones:** {len(df_resultados)}  
-**Predicciones positivas (SÍ COMPRARÁ):** {predicciones_positivas}  
-**Predicciones negativas (NO COMPRARÁ):** {(df_display['Predicción'] == 'NO COMPRARÁ').sum()}  
+**Predicciones positivas:** {(df_display['Predicción'] == 'SÍ COMPRARÁ').sum()}  
+**Predicciones negativas:** {(df_display['Predicción'] == 'NO COMPRARÁ').sum()}  
 **Probabilidad promedio:** {df_display['Probabilidad (%)'].mean():.2f}%
 
 ---
-*El CSV descargable contiene solo las {predicciones_positivas} duplas customer-product con predicción positiva*
+*Haz clic en el botón "Descargar CSV" para obtener el archivo con customer_id, product_id y prediccion*
             """
             
-            return df_display, resumen, temp_file.name
+            return df_display, resumen, csv_string
         else:
             return None, f"Error al obtener predicciones: {response.json().get('detail', 'Error desconocido')}", None
             
@@ -266,29 +261,30 @@ with gr.Blocks(
         
         resumen_batch = gr.Markdown(label="Resumen")
         
-        # Botón de descarga CSV
+        # Archivo de descarga (compatible con Gradio 4.8.0)
         with gr.Row():
-            download_btn = gr.DownloadButton(
-                label="📥 Descargar CSV (Solo predicciones positivas)",
+            csv_output = gr.File(
+                label="📥 Descargar CSV (customer_id, product_id, prediccion)",
                 visible=False
             )
         
-        # Estado para guardar el archivo temporal
-        csv_file_state = gr.State()
-        
-        def actualizar_descarga(df, resumen, csv_path):
-            if csv_path is not None:
-                return df, resumen, gr.DownloadButton(visible=True, value=csv_path), csv_path
-            return df, resumen, gr.DownloadButton(visible=False), None
+        def procesar_y_preparar_descarga(archivo):
+            df, resumen, csv_string = predecir_batch(archivo)
+            
+            if csv_string is not None:
+                # Guardar el CSV en un archivo temporal
+                csv_path = "/tmp/resultados_prediccion.csv"
+                with open(csv_path, 'w') as f:
+                    f.write(csv_string)
+                
+                return df, resumen, gr.File(value=csv_path, visible=True)
+            else:
+                return df, resumen, gr.File(visible=False)
         
         predecir_batch_btn.click(
-            fn=predecir_batch,
+            fn=procesar_y_preparar_descarga,
             inputs=archivo_input,
-            outputs=[resultado_batch, resumen_batch, csv_file_state]
-        ).then(
-            fn=actualizar_descarga,
-            inputs=[resultado_batch, resumen_batch, csv_file_state],
-            outputs=[resultado_batch, resumen_batch, download_btn, csv_file_state]
+            outputs=[resultado_batch, resumen_batch, csv_output]
         )
         
         gr.Markdown(
@@ -298,8 +294,7 @@ with gr.Blocks(
             - Asegúrate de que el archivo CSV tenga las columnas `customer_id` y `product_id`
             - Los IDs deben ser cadenas de texto o números
             - No hay límite en el número de predicciones, pero archivos muy grandes pueden tardar más
-            - El archivo descargado contendrá **solo las duplas con predicción positiva** (SÍ COMPRARÁ)
-            - El formato del CSV es: `customer_id,product_id` (sin encabezados)
+            - El archivo descargado contendrá `customer_id`, `product_id` y `prediccion` (sin encabezados)
             """
         )
     
@@ -361,7 +356,7 @@ with gr.Blocks(
             3. Sube tu archivo CSV usando el botón de carga
             4. Haz clic en "Realizar Predicciones por Lote"
             5. Revisa los resultados en la tabla
-            6. Usa el botón "Descargar CSV" para obtener el archivo con `customer_id` y `product_id` (sin encabezados)
+            6. Haz clic en el archivo CSV que aparece para descargarlo
             
             ### Información del Modelo
             1. Ve a la pestaña "Información del Modelo"
@@ -381,8 +376,8 @@ with gr.Blocks(
             según la configuración del pipeline.
             
             **¿Qué formato tiene el CSV descargable?**  
-            El CSV descargable contiene solo dos columnas (`customer_id` y `product_id`) sin encabezados, 
-            listo para ser usado en otros sistemas.
+            El CSV descargable contiene tres columnas (`customer_id`, `product_id` y `prediccion`) sin encabezados, 
+            donde prediccion es 1 (comprará) o 0 (no comprará), listo para ser usado en otros sistemas.
             
             **¿Qué hago si obtengo un error?**  
             Verifica que los IDs sean válidos y que el backend esté funcionando correctamente. Si el problema 
@@ -413,9 +408,9 @@ with gr.Blocks(
     def actualizar_estado():
         conectado, mensaje = verificar_conexion_backend()
         if conectado:
-            return f"**Estado:** {mensaje}"
+            return f" **Estado:** {mensaje}"
         else:
-            return f"**Estado:** {mensaje}"
+            return f" **Estado:** {mensaje}"
     
     demo.load(fn=actualizar_estado, outputs=estado_conexion)
 
