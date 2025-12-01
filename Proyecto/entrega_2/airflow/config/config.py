@@ -57,7 +57,7 @@ TOP_N_RECOMMENDATIONS = 5
 # ---------------------------------------------------------------------
 
 # Ambiente actual (configurar vía docker-compose)
-ENVIRONMENT = os.getenv("ENVIRONMENT", "staging" ) # Modificar segun ambiente que se use "dev", "staging"  "prod" en docker-compose
+ENVIRONMENT = os.getenv("ENVIRONMENT", "prod" ) # Modificar segun ambiente que se use "dev", "staging"  "prod" en docker-compose
 
 # Configuración por ambiente
 SAMPLING_CONFIG = {
@@ -85,7 +85,7 @@ SAMPLING_CONFIG = {
 }
 
 # Obtener configuración del ambiente actual
-_config = SAMPLING_CONFIG.get(ENVIRONMENT, SAMPLING_CONFIG["staging" ])
+_config = SAMPLING_CONFIG.get(ENVIRONMENT, SAMPLING_CONFIG["prod" ])
 
 SAMPLING_ENABLED = _config["enabled"]
 SAMPLE_FRACTION = _config["sample_fraction"]
