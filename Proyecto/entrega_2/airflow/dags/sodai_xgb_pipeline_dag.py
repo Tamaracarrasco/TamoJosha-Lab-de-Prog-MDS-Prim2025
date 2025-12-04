@@ -45,6 +45,7 @@ def extract_data_task(**context):
     resto del DAG sepa si hay data nueva.
     """
     import config as cfg
+    import json
     
     data_files = os.listdir(cfg.DATA_DIR)
     print(f"[extract_data_task] Archivos disponibles en DATA_DIR: {data_files}")
@@ -58,11 +59,14 @@ def extract_data_task(**context):
             f"[extract_data_task] Faltan archivos requeridos: {missing_files}"
         )
     
-    # Detectar si hay archivos de nuevas transacciones
+    # Detectar TODOS los archivos de nuevas transacciones
     new_tx_files = [
         f for f in data_files 
         if f.startswith(cfg.NEW_TRANSACCIONES_PREFIX) and f.endswith(".parquet")
     ]
+    
+    # Ordenar para procesamiento consistente
+    new_tx_files.sort()
     
     has_new_data = len(new_tx_files) > 0
     
@@ -70,8 +74,19 @@ def extract_data_task(**context):
     ti.xcom_push(key="has_new_data", value=has_new_data)
     
     if has_new_data:
+        # Guardar LISTA de archivos (no solo el primero)
+        new_tx_files_json = json.dumps(new_tx_files)
+        Variable.set("NEW_TX_FILES_LIST", new_tx_files_json)
+        
         print(f"[extract_data_task] Nueva data detectada: {new_tx_files}")
+        print(f"[extract_data_task] Total de archivos nuevos: {len(new_tx_files)}")
+        print(f"[extract_data_task] Variable NEW_TX_FILES_LIST seteada")
     else:
+        # Limpiar la variable si no hay nueva data
+        try:
+            Variable.delete("NEW_TX_FILES_LIST")
+        except:
+            pass
         print("[extract_data_task]  No hay nueva data (solo histórico)")
     
     print("[extract_data_task]  Todos los archivos requeridos están presentes.")
@@ -85,22 +100,29 @@ def transform_data_task(**context):
     el target y guardo df_final_latest.parquet.
     """
     import config as cfg
+    import json
     from scripts.data_io import build_dataset_from_raw
     
     DF_FINAL_PATH = os.path.join(cfg.DATA_DIR, "df_final_latest.parquet")
     
-    # Obtener nombre de archivo de transacciones nuevas (si existe)
+    # Obtener LISTA de archivos de transacciones nuevas (si existe)
     try:
-        new_transactions_filename = Variable.get("NEW_TX_FILENAME", default_var=None)
+        new_tx_files_json = Variable.get("NEW_TX_FILES_LIST", default_var=None)
+        if new_tx_files_json:
+            new_transactions_files = json.loads(new_tx_files_json)
+        else:
+            new_transactions_files = None
     except:
-        new_transactions_filename = None
+        new_transactions_files = None
     
-    print(f"[transform_data_task] Nueva semana: {new_transactions_filename}")
+    print(f"[transform_data_task] Archivos nuevos: {new_transactions_files}")
+    if new_transactions_files:
+        print(f"[transform_data_task] Total archivos a procesar: {len(new_transactions_files)}")
 
-    # Construir dataset
+    # Construir dataset (ahora acepta lista)
     df_final = build_dataset_from_raw(
         data_dir=cfg.DATA_DIR,
-        new_transactions_filename=new_transactions_filename,
+        new_transactions_filename=new_transactions_files,
     )
     
     # Guardar
@@ -319,6 +341,7 @@ def predict_next_week(**context):
     guardo predicciones_finales.parquet.
     """
     import config as cfg
+    import json
     from scripts.data_preparation import build_next_week_candidates_from_raw
     
     MODEL_PATH = os.path.join(cfg.MODELS_DIR, "xgb_best_model.pkl")
@@ -344,15 +367,19 @@ def predict_next_week(**context):
 
     # ========== CONSTRUCCIÓN DE CANDIDATOS t+2 ==========
     try:
-        new_tx_file = Variable.get("NEW_TX_FILENAME", default_var=None)
+        new_tx_files_json = Variable.get("NEW_TX_FILES_LIST", default_var=None)
+        if new_tx_files_json:
+            new_tx_files = json.loads(new_tx_files_json)
+        else:
+            new_tx_files = None
     except:
-        new_tx_file = None
+        new_tx_files = None
     
-    print(f"[predict_next_week_task]  Archivo nueva semana: {new_tx_file}")
+    print(f"[predict_next_week_task]  Archivos nueva semana: {new_tx_files}")
 
     df_candidates = build_next_week_candidates_from_raw(
         data_dir=cfg.DATA_DIR,
-        new_transactions_filename=new_tx_file,
+        new_transactions_filename=new_tx_files,
     )
 
     print(

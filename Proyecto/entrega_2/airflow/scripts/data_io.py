@@ -1,19 +1,24 @@
 # airflow/scripts/data_io.py
 
 import os
-from typing import Optional
+from typing import Optional, Union, List
 
 import pandas as pd
 
 
 def build_dataset_from_raw(
     data_dir: str,
-    new_transactions_filename: Optional[str] = None
+    new_transactions_filename: Optional[Union[str, List[str]]] = None
 ) -> pd.DataFrame:
     """
     Wrapper fino sobre build_model_dataset.
     Construye df_final a partir de los parquet crudos (y opcionalmente
-    un archivo nuevo de transacciones).
+    un archivo nuevo de transacciones o una lista de archivos).
+    
+    Args:
+        data_dir: directorio con los parquet
+        new_transactions_filename: puede ser None, un string (archivo único),
+                                   o una lista de strings (múltiples archivos)
     """
     # Lazy import porque me quedaba sin RAM
     from scripts.data_preparation import build_model_dataset

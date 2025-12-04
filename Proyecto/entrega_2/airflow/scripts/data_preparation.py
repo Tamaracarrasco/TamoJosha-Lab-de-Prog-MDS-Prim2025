@@ -3,7 +3,7 @@
 
 # Importo librerias
 import os
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Union, List
 
 import numpy as np
 import pandas as pd
@@ -15,14 +15,19 @@ import pandas as pd
 
 def load_raw_data(
     data_dir: str,
-    extra_transactions_path: Optional[str] = None,
+    extra_transactions_path: Optional[Union[str, List[str]]] = None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Lee clientes.parquet, productos.parquet y transacciones.parquet
     desde el directorio data_dir.
 
-    Si extra_transactions_path no es None, concatena un segundo archivo de
+    Si extra_transactions_path no es None, concatena uno o más archivos de
     transacciones (nueva semana, p.ej. t+1) al histórico antes de devolverlo.
+    
+    Args:
+        data_dir: directorio con los archivos base
+        extra_transactions_path: puede ser None, un string (archivo único),
+                                 o una lista de strings (múltiples archivos)
     """
 
     # Clientes y productos se asumen estables en el tiempo
@@ -35,16 +40,29 @@ def load_raw_data(
     )
 
     if extra_transactions_path is not None:
-        # Nuevas transacciones (por ejemplo, semana t+1)
-        transacciones_new = pd.read_parquet(extra_transactions_path)
-
-        # Concatenar histórico + nuevo batch
-        transacciones = pd.concat(
-            [transacciones_hist, transacciones_new],
-            ignore_index=True,
-        )
+        # Convertir a lista si es string único
+        if isinstance(extra_transactions_path, str):
+            extra_files = [extra_transactions_path]
+        else:
+            extra_files = extra_transactions_path
+        
+        # Leer y concatenar TODOS los archivos nuevos
+        new_dfs = [transacciones_hist]  # Empezar con histórico
+        
+        for filepath in extra_files:
+            if os.path.exists(filepath):
+                transacciones_new = pd.read_parquet(filepath)
+                new_dfs.append(transacciones_new)
+                print(f"  [load_raw_data] Cargado: {os.path.basename(filepath)} con {len(transacciones_new):,} registros")
+            else:
+                print(f"  [load_raw_data] ADVERTENCIA: No se encontró {filepath}")
+        
+        # Concatenar histórico + todos los nuevos
+        transacciones = pd.concat(new_dfs, ignore_index=True)
+        print(f"  [load_raw_data] Total transacciones: {len(transacciones):,} registros")
     else:
         transacciones = transacciones_hist
+        print(f"  [load_raw_data] Solo histórico: {len(transacciones):,} registros")
 
     return clientes, productos, transacciones
 
@@ -369,31 +387,34 @@ def build_weekly_panel_with_target(df: pd.DataFrame) -> pd.DataFrame:
 
 def build_model_dataset(
     data_dir: str,
-    new_transactions_filename: Optional[str] = None,
+    new_transactions_filename: Optional[Union[str, List[str]]] = None,
 ) -> pd.DataFrame:
     """
     Pipeline completo de preparación:
     - carga parquet histórico (clientes, productos, transacciones)
-    - opcionalmente concatena un archivo extra de transacciones (nueva semana)
+    - opcionalmente concatena uno o más archivos extra de transacciones (nueva semana)
     - cast dtypes
     - dedup transacciones
     - merge a nivel transacción
     - panel semanal y target
 
-    Si new_transactions_filename es None:
-        usa solo transacciones.parquet.
-    Si NO es None:
-        concatena data_dir/transacciones.parquet con data_dir/new_transactions_filename por ejemplo.
+    Args:
+        data_dir: directorio con los archivos base
+        new_transactions_filename: puede ser None, un string (archivo único),
+                                   o una lista de strings (múltiples archivos)
     """
 
-    extra_path = (
-        os.path.join(data_dir, new_transactions_filename)
-        if new_transactions_filename is not None
-        else None
-    )
+    # Construir paths completos si hay archivos nuevos
+    extra_paths = None
+    if new_transactions_filename is not None:
+        if isinstance(new_transactions_filename, str):
+            extra_paths = os.path.join(data_dir, new_transactions_filename)
+        else:
+            # Es una lista
+            extra_paths = [os.path.join(data_dir, f) for f in new_transactions_filename]
 
     clientes, productos, transacciones = load_raw_data(
-        data_dir, extra_transactions_path=extra_path
+        data_dir, extra_transactions_path=extra_paths
     )
     clientes, productos, transacciones = cast_and_clean_raw_tables(
         clientes, productos, transacciones
@@ -403,15 +424,16 @@ def build_model_dataset(
     df_final = build_weekly_panel_with_target(df)
     return df_final
 
+
 def build_next_week_candidates_from_raw(
     data_dir: str,
-    new_transactions_filename: Optional[str] = None,
+    new_transactions_filename: Optional[Union[str, List[str]]] = None,
 ) -> pd.DataFrame:
     """
     Construye el dataset de candidatos para predecir la próxima semana (t+2).
 
     Lógica:
-    - Carga clientes, productos, transacciones (histórico + opcional nuevo batch).
+    - Carga clientes, productos, transacciones (histórico + opcional uno o más archivos nuevos).
     - Limpia/castea y deduplica transacciones (mismas funciones que build_model_dataset).
     - Calcula la serie semanal (W-MON) por (customer_id, product_id).
     - Identifica la última semana disponible (t+1).
@@ -419,18 +441,26 @@ def build_next_week_candidates_from_raw(
       con sus features semanales (purchased_count, compra_o_no) y features estáticas,
       pero dejando week_t = t+1 y week_t_plus_1 = t+2.
     - Devuelve un df con la misma estructura de features que df_final, pero sin "y",
-      pensado para alimentar al pipeline XGBoost (mejor modelo) y predecir t+2.
+      pensado para alimentar al pipeline XGBoost y predecir t+2.
+      
+    Args:
+        data_dir: directorio con los archivos base
+        new_transactions_filename: puede ser None, un string (archivo único),
+                                   o una lista de strings (múltiples archivos)
     """
 
-    # Carga crudo (histórico + opcional nuevo archivo)
-    extra_path = (
-        os.path.join(data_dir, new_transactions_filename)
-        if new_transactions_filename is not None
-        else None
-    )
+    # Construir paths completos si hay archivos nuevos
+    extra_paths = None
+    if new_transactions_filename is not None:
+        if isinstance(new_transactions_filename, str):
+            extra_paths = os.path.join(data_dir, new_transactions_filename)
+        else:
+            # Es una lista
+            extra_paths = [os.path.join(data_dir, f) for f in new_transactions_filename]
+
     clientes, productos, transacciones = load_raw_data(
         data_dir=data_dir,
-        extra_transactions_path=extra_path,
+        extra_transactions_path=extra_paths,
     )
     clientes, productos, transacciones = cast_and_clean_raw_tables(
         clientes, productos, transacciones
