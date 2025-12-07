@@ -1,0 +1,217 @@
+1. *extract_data_task*
+b6c371dd2e5a
+*** Found local files:
+***   * /opt/airflow/logs/dag_id=sodai_xgb_pipeline/run_id=manual__2025-12-04T21:10:06.268744+00:00/task_id=extract_data_task/attempt=1.log
+[2025-12-04, 21:10:08 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.extract_data_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:10:08 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.extract_data_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:10:08 UTC] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-12-04, 21:10:08 UTC] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): extract_data_task> on 2025-12-04 21:10:06.268744+00:00
+[2025-12-04, 21:10:08 UTC] {standard_task_runner.py:60} INFO - Started process 194 to run task
+[2025-12-04, 21:10:08 UTC] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sodai_xgb_pipeline', 'extract_data_task', 'manual__2025-12-04T21:10:06.268744+00:00', '--job-id', '133', '--raw', '--subdir', 'DAGS_FOLDER/sodai_xgb_pipeline_dag.py', '--cfg-path', '/tmp/tmp_895l4g0']
+[2025-12-04, 21:10:08 UTC] {standard_task_runner.py:88} INFO - Job 133: Subtask extract_data_task
+[2025-12-04, 21:10:08 UTC] {task_command.py:423} INFO - Running <TaskInstance: sodai_xgb_pipeline.extract_data_task manual__2025-12-04T21:10:06.268744+00:00 [running]> on host b6c371dd2e5a
+[2025-12-04, 21:10:09 UTC] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sodai_drinkers' AIRFLOW_CTX_DAG_ID='sodai_xgb_pipeline' AIRFLOW_CTX_TASK_ID='extract_data_task' AIRFLOW_CTX_EXECUTION_DATE='2025-12-04T21:10:06.268744+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-04T21:10:06.268744+00:00'
+[2025-12-04, 21:10:09 UTC] {logging_mixin.py:188} INFO - [extract_data_task] Archivos disponibles en DATA_DIR: ['clientes.parquet', 'df_final_latest.parquet', 'productos.parquet', 'transacciones.parquet', 'transacciones_1.parquet', 'transacciones_2.parquet', 'transacciones_3.parquet']
+[2025-12-04, 21:10:09 UTC] {crypto.py:82} WARNING - empty cryptography key - values will not be stored encrypted.
+[2025-12-04, 21:10:09 UTC] {logging_mixin.py:188} INFO - [extract_data_task] Nueva data detectada: ['transacciones_1.parquet', 'transacciones_2.parquet', 'transacciones_3.parquet']
+[2025-12-04, 21:10:09 UTC] {logging_mixin.py:188} INFO - [extract_data_task] Total de archivos nuevos: 3
+[2025-12-04, 21:10:09 UTC] {logging_mixin.py:188} INFO - [extract_data_task] Variable NEW_TX_FILES_LIST seteada
+[2025-12-04, 21:10:09 UTC] {logging_mixin.py:188} INFO - [extract_data_task]  Todos los archivos requeridos están presentes.
+[2025-12-04, 21:10:09 UTC] {python.py:201} INFO - Done. Returned value was: None
+[2025-12-04, 21:10:09 UTC] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sodai_xgb_pipeline, task_id=extract_data_task, execution_date=20251204T211006, start_date=20251204T211008, end_date=20251204T211009
+[2025-12-04, 21:10:09 UTC] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-04, 21:10:09 UTC] {taskinstance.py:3281} INFO - 1 downstream tasks scheduled from follow-on schedule check
+
+2. *transform_data_task*
+b6c371dd2e5a
+*** Found local files:
+***   * /opt/airflow/logs/dag_id=sodai_xgb_pipeline/run_id=manual__2025-12-04T21:10:06.268744+00:00/task_id=transform_data_task/attempt=1.log
+[2025-12-04, 21:10:12 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.transform_data_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:10:12 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.transform_data_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:10:12 UTC] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-12-04, 21:10:12 UTC] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): transform_data_task> on 2025-12-04 21:10:06.268744+00:00
+[2025-12-04, 21:10:12 UTC] {standard_task_runner.py:60} INFO - Started process 204 to run task
+[2025-12-04, 21:10:12 UTC] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sodai_xgb_pipeline', 'transform_data_task', 'manual__2025-12-04T21:10:06.268744+00:00', '--job-id', '134', '--raw', '--subdir', 'DAGS_FOLDER/sodai_xgb_pipeline_dag.py', '--cfg-path', '/tmp/tmpc860dnbe']
+[2025-12-04, 21:10:12 UTC] {standard_task_runner.py:88} INFO - Job 134: Subtask transform_data_task
+[2025-12-04, 21:10:12 UTC] {task_command.py:423} INFO - Running <TaskInstance: sodai_xgb_pipeline.transform_data_task manual__2025-12-04T21:10:06.268744+00:00 [running]> on host b6c371dd2e5a
+[2025-12-04, 21:10:13 UTC] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sodai_drinkers' AIRFLOW_CTX_DAG_ID='sodai_xgb_pipeline' AIRFLOW_CTX_TASK_ID='transform_data_task' AIRFLOW_CTX_EXECUTION_DATE='2025-12-04T21:10:06.268744+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-04T21:10:06.268744+00:00'
+[2025-12-04, 21:10:13 UTC] {logging_mixin.py:188} INFO - [transform_data_task] Archivos nuevos: ['transacciones_1.parquet', 'transacciones_2.parquet', 'transacciones_3.parquet']
+[2025-12-04, 21:10:13 UTC] {logging_mixin.py:188} INFO - [transform_data_task] Total archivos a procesar: 3
+[2025-12-04, 21:10:16 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Cargado: transacciones_1.parquet con 3,942 registros
+[2025-12-04, 21:10:16 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Cargado: transacciones_2.parquet con 6,531 registros
+[2025-12-04, 21:10:16 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Cargado: transacciones_3.parquet con 6,232 registros
+[2025-12-04, 21:10:16 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Total transacciones: 271,641 registros
+[2025-12-04, 21:14:18 UTC] {logging_mixin.py:188} INFO - [transform_data_task]  df_final guardado en /opt/***/data/df_final_latest.parquet. Shape: (9506475, 23)
+[2025-12-04, 21:14:18 UTC] {python.py:201} INFO - Done. Returned value was: /opt/***/data/df_final_latest.parquet
+[2025-12-04, 21:14:18 UTC] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sodai_xgb_pipeline, task_id=transform_data_task, execution_date=20251204T211006, start_date=20251204T211012, end_date=20251204T211418
+[2025-12-04, 21:14:19 UTC] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-04, 21:14:19 UTC] {taskinstance.py:3281} INFO - 1 downstream tasks scheduled from follow-on schedule check
+
+3. *check_drift_task*
+b6c371dd2e5a
+*** Found local files:
+***   * /opt/airflow/logs/dag_id=sodai_xgb_pipeline/run_id=manual__2025-12-04T21:10:06.268744+00:00/task_id=check_drift_task/attempt=1.log
+[2025-12-04, 21:14:21 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.check_drift_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:14:21 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.check_drift_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:14:21 UTC] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-12-04, 21:14:21 UTC] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): check_drift_task> on 2025-12-04 21:10:06.268744+00:00
+[2025-12-04, 21:14:21 UTC] {standard_task_runner.py:60} INFO - Started process 378 to run task
+[2025-12-04, 21:14:21 UTC] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sodai_xgb_pipeline', 'check_drift_task', 'manual__2025-12-04T21:10:06.268744+00:00', '--job-id', '135', '--raw', '--subdir', 'DAGS_FOLDER/sodai_xgb_pipeline_dag.py', '--cfg-path', '/tmp/tmpmxl6bzwv']
+[2025-12-04, 21:14:21 UTC] {standard_task_runner.py:88} INFO - Job 135: Subtask check_drift_task
+[2025-12-04, 21:14:21 UTC] {task_command.py:423} INFO - Running <TaskInstance: sodai_xgb_pipeline.check_drift_task manual__2025-12-04T21:10:06.268744+00:00 [running]> on host b6c371dd2e5a
+[2025-12-04, 21:14:22 UTC] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sodai_drinkers' AIRFLOW_CTX_DAG_ID='sodai_xgb_pipeline' AIRFLOW_CTX_TASK_ID='check_drift_task' AIRFLOW_CTX_EXECUTION_DATE='2025-12-04T21:10:06.268744+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-04T21:10:06.268744+00:00'
+[2025-12-04, 21:14:22 UTC] {logging_mixin.py:188} INFO - [check_drift_task] Cargando df_final desde /opt/***/data/df_final_latest.parquet
+[2025-12-04, 21:14:23 UTC] {logging_mixin.py:188} INFO - [check_drift_task] df_final cargado para drift con shape: (9506475, 8)
+[2025-12-04, 21:14:30 UTC] {logging_mixin.py:188} INFO - [check_drift_task]  Sin drift
+[2025-12-04, 21:14:30 UTC] {logging_mixin.py:188} INFO - [check_drift_task] Reporte PSI: {'drift_detected': False, 'psi_per_feature': {'X': 0.0, 'Y': 0.0, 'size': 0.0, 'num_deliver_per_week': 0.0, 'num_visit_per_week': 0.0}, 'psi_threshold': 0.2, 'week_base_max': 202502, 'week_new': 202503, 'n_base': 9333630, 'n_new': 172845}
+[2025-12-04, 21:14:30 UTC] {python.py:201} INFO - Done. Returned value was: False
+[2025-12-04, 21:14:30 UTC] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sodai_xgb_pipeline, task_id=check_drift_task, execution_date=20251204T211006, start_date=20251204T211421, end_date=20251204T211430
+[2025-12-04, 21:14:30 UTC] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-04, 21:14:30 UTC] {taskinstance.py:3281} INFO - 1 downstream tasks scheduled from follow-on schedule check
+
+4. *branch_on_drift*
+b6c371dd2e5a
+*** Found local files:
+***   * /opt/airflow/logs/dag_id=sodai_xgb_pipeline/run_id=manual__2025-12-04T21:10:06.268744+00:00/task_id=branch_on_drift/attempt=1.log
+[2025-12-04, 21:14:31 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.branch_on_drift manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:14:31 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.branch_on_drift manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:14:31 UTC] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-12-04, 21:14:31 UTC] {taskinstance.py:2192} INFO - Executing <Task(BranchPythonOperator): branch_on_drift> on 2025-12-04 21:10:06.268744+00:00
+[2025-12-04, 21:14:31 UTC] {standard_task_runner.py:60} INFO - Started process 396 to run task
+[2025-12-04, 21:14:31 UTC] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sodai_xgb_pipeline', 'branch_on_drift', 'manual__2025-12-04T21:10:06.268744+00:00', '--job-id', '136', '--raw', '--subdir', 'DAGS_FOLDER/sodai_xgb_pipeline_dag.py', '--cfg-path', '/tmp/tmpbpm394yf']
+[2025-12-04, 21:14:31 UTC] {standard_task_runner.py:88} INFO - Job 136: Subtask branch_on_drift
+[2025-12-04, 21:14:31 UTC] {task_command.py:423} INFO - Running <TaskInstance: sodai_xgb_pipeline.branch_on_drift manual__2025-12-04T21:10:06.268744+00:00 [running]> on host b6c371dd2e5a
+[2025-12-04, 21:14:32 UTC] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sodai_drinkers' AIRFLOW_CTX_DAG_ID='sodai_xgb_pipeline' AIRFLOW_CTX_TASK_ID='branch_on_drift' AIRFLOW_CTX_EXECUTION_DATE='2025-12-04T21:10:06.268744+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-04T21:10:06.268744+00:00'
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO - 
+============================================================
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO - EVALUACIÓN DE REENTRENAMIENTO
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO - ============================================================
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO -   Modelo existe: True
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO -   Nueva data:    True
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO -   Drift:         False
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO - ============================================================
+[2025-12-04, 21:14:32 UTC] {logging_mixin.py:188} INFO - [branch_on_drift] Nueva data detectada → REENTRENAR
+[2025-12-04, 21:14:32 UTC] {python.py:201} INFO - Done. Returned value was: retrain_model_task
+[2025-12-04, 21:14:32 UTC] {branch.py:35} INFO - Branch into retrain_model_task
+[2025-12-04, 21:14:32 UTC] {skipmixin.py:178} INFO - Following branch retrain_model_task
+[2025-12-04, 21:14:32 UTC] {skipmixin.py:244} INFO - Skipping tasks [('skip_retrain', -1)]
+[2025-12-04, 21:14:32 UTC] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sodai_xgb_pipeline, task_id=branch_on_drift, execution_date=20251204T211006, start_date=20251204T211431, end_date=20251204T211432
+[2025-12-04, 21:14:32 UTC] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-04, 21:14:32 UTC] {taskinstance.py:3281} INFO - 1 downstream tasks scheduled from follow-on schedule check
+
+5. *retrain_model_task*
+b6c371dd2e5a
+*** Found local files:
+***   * /opt/airflow/logs/dag_id=sodai_xgb_pipeline/run_id=manual__2025-12-04T21:10:06.268744+00:00/task_id=retrain_model_task/attempt=1.log
+[2025-12-04, 21:14:33 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.retrain_model_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:14:33 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.retrain_model_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:14:33 UTC] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-12-04, 21:14:33 UTC] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): retrain_model_task> on 2025-12-04 21:10:06.268744+00:00
+[2025-12-04, 21:14:33 UTC] {standard_task_runner.py:60} INFO - Started process 405 to run task
+[2025-12-04, 21:14:33 UTC] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sodai_xgb_pipeline', 'retrain_model_task', 'manual__2025-12-04T21:10:06.268744+00:00', '--job-id', '137', '--raw', '--subdir', 'DAGS_FOLDER/sodai_xgb_pipeline_dag.py', '--cfg-path', '/tmp/tmp11ppnbdj']
+[2025-12-04, 21:14:33 UTC] {standard_task_runner.py:88} INFO - Job 137: Subtask retrain_model_task
+[2025-12-04, 21:14:33 UTC] {task_command.py:423} INFO - Running <TaskInstance: sodai_xgb_pipeline.retrain_model_task manual__2025-12-04T21:10:06.268744+00:00 [running]> on host b6c371dd2e5a
+[2025-12-04, 21:14:34 UTC] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sodai_drinkers' AIRFLOW_CTX_DAG_ID='sodai_xgb_pipeline' AIRFLOW_CTX_TASK_ID='retrain_model_task' AIRFLOW_CTX_EXECUTION_DATE='2025-12-04T21:10:06.268744+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-04T21:10:06.268744+00:00'
+[2025-12-04, 21:14:36 UTC] {logging_mixin.py:188} INFO - [retrain_model_task] Cargando df_final COMPLETO desde /opt/***/data/df_final_latest.parquet
+[2025-12-04, 21:14:43 UTC] {logging_mixin.py:188} INFO - [retrain_model_task] Shape total: (9506475, 23)
+[2025-12-04, 21:14:43 UTC] {logging_mixin.py:188} INFO - [retrain_model_task]  Iniciando entrenamiento con Optuna...
+[2025-12-04, 21:15:59 UTC] {logging_mixin.py:188} INFO - [Optuna] Iniciando búsqueda de hiperparámetros...
+[2025-12-04, 21:16:00 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:16:00,945] A new study created in memory with name: no-name-6511bb68-2d84-46ad-afd6-47555e4ce75f
+[2025-12-04, 21:25:01 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:25:01,869] Trial 1 finished with value: 0.1780886297741476 and parameters: {'learning_rate': 0.09134614906829427, 'n_estimators': 165, 'max_depth': 10, 'min_child_weight': 1, 'reg_alpha': 0.29682885924555624, 'reg_lambda': 0.6472134605105493, 'min_frequency': 0.12085507123059569}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:29:41 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:29:41,106] Trial 2 finished with value: 0.11000102898630491 and parameters: {'learning_rate': 0.0013020687323060326, 'n_estimators': 937, 'max_depth': 3, 'min_child_weight': 3, 'reg_alpha': 0.17267624258424108, 'reg_lambda': 0.8695668743118032, 'min_frequency': 0.9401681367957161}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:32:51 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:32:51,006] Trial 0 finished with value: 0.13032640221641822 and parameters: {'learning_rate': 0.025739370131280633, 'n_estimators': 620, 'max_depth': 10, 'min_child_weight': 1, 'reg_alpha': 0.054220479001211186, 'reg_lambda': 0.24604114391085652, 'min_frequency': 0.7838929740730946}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:32:51 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:32:51,238] Trial 3 finished with value: 0.12097850920116067 and parameters: {'learning_rate': 0.025095505759421773, 'n_estimators': 908, 'max_depth': 6, 'min_child_weight': 4, 'reg_alpha': 0.03894733446186094, 'reg_lambda': 0.008196805289575004, 'min_frequency': 0.8202514969888323}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:34:06 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:34:05,959] Trial 5 finished with value: 0.1065122783172367 and parameters: {'learning_rate': 0.05569113291531812, 'n_estimators': 168, 'max_depth': 4, 'min_child_weight': 2, 'reg_alpha': 0.8385305594718361, 'reg_lambda': 0.8251053522870226, 'min_frequency': 0.6525995459712505}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:37:46 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:37:46,555] Trial 4 finished with value: 0.12934155766677835 and parameters: {'learning_rate': 0.029835362332141555, 'n_estimators': 983, 'max_depth': 5, 'min_child_weight': 5, 'reg_alpha': 0.5245319428323533, 'reg_lambda': 0.5653487080949957, 'min_frequency': 0.28942171531290917}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:38:40 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:38:40,498] Trial 8 finished with value: 0.1122769296102808 and parameters: {'learning_rate': 0.07546606553446597, 'n_estimators': 143, 'max_depth': 5, 'min_child_weight': 2, 'reg_alpha': 0.9854898702481929, 'reg_lambda': 0.3868175431809455, 'min_frequency': 0.9196269302585353}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:40:05 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:40:05,626] Trial 7 finished with value: 0.14461611636185098 and parameters: {'learning_rate': 0.026491601317976565, 'n_estimators': 224, 'max_depth': 8, 'min_child_weight': 1, 'reg_alpha': 0.8147816164440232, 'reg_lambda': 0.5625103182052816, 'min_frequency': 0.020267041175370815}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:41:41 UTC] {logging_mixin.py:188} WARNING - [I 2025-12-04 21:41:41,115] Trial 6 finished with value: 0.10775026042306034 and parameters: {'learning_rate': 0.008576540486356974, 'n_estimators': 924, 'max_depth': 3, 'min_child_weight': 5, 'reg_alpha': 0.4823563212669717, 'reg_lambda': 0.3357283956053462, 'min_frequency': 0.3461351104625544}. Best is trial 1 with value: 0.1780886297741476.
+[2025-12-04, 21:41:41 UTC] {logging_mixin.py:188} INFO - [Optuna] Número de trials: 9
+[2025-12-04, 21:41:41 UTC] {logging_mixin.py:188} INFO - [Optuna] Mejor F1: 0.1781
+[2025-12-04, 21:41:41 UTC] {logging_mixin.py:188} INFO - [Optuna] Mejores parámetros: {'learning_rate': 0.09134614906829427, 'n_estimators': 165, 'max_depth': 10, 'min_child_weight': 1, 'reg_alpha': 0.29682885924555624, 'reg_lambda': 0.6472134605105493, 'min_frequency': 0.12085507123059569}
+[2025-12-04, 21:41:41 UTC] {logging_mixin.py:188} INFO - [Optuna] Búsqueda finalizada.
+[2025-12-04, 21:45:15 UTC] {logging_mixin.py:188} WARNING - 2025/12/04 21:45:15 WARNING mlflow.utils.git_utils: Failed to import Git (the Git executable is probably not on your PATH), so Git SHA is not available. Error: Failed to initialize: Bad git executable.
+The git executable must be specified in one of the following ways:
+    - be included in your $PATH
+    - be set via $GIT_PYTHON_GIT_EXECUTABLE
+    - explicitly set via git.refresh(<full-path-to-git-executable>)
+All git commands will error until this is rectified.
+This initial message can be silenced or aggravated in the future by setting the
+$GIT_PYTHON_REFRESH environment variable. Use one of the following values:
+    - quiet|q|silence|s|silent|none|n|0: for no message or exception
+    - warn|w|warning|log|l|1: for a warning message (logging level CRITICAL, displayed by default)
+    - error|e|exception|raise|r|2: for a raised exception
+Example:
+    export GIT_PYTHON_REFRESH=quiet
+[2025-12-04, 21:46:04 UTC] {logging_mixin.py:188} INFO - === Métricas en validación con umbral seleccionado ===
+[2025-12-04, 21:46:04 UTC] {logging_mixin.py:188} INFO - Umbral seleccionado: 0.8
+[2025-12-04, 21:46:06 UTC] {logging_mixin.py:188} INFO -               precision    recall  f1-score   support
+           0      0.987     0.947     0.966   1856341
+           1      0.179     0.479     0.261     44954
+    accuracy                          0.936   1901295
+   macro avg      0.583     0.713     0.614   1901295
+weighted avg      0.968     0.936     0.950   1901295
+[2025-12-04, 21:46:26 UTC] {logging_mixin.py:188} INFO - === Métricas en test con umbral seleccionado ===
+[2025-12-04, 21:46:31 UTC] {logging_mixin.py:188} INFO -               precision    recall  f1-score   support
+           0      0.984     0.947     0.965   1346136
+           1      0.185     0.442     0.261     36624
+    accuracy                          0.934   1382760
+   macro avg      0.585     0.694     0.613   1382760
+weighted avg      0.963     0.934     0.947   1382760
+[2025-12-04, 21:48:11 UTC] {logging_mixin.py:188} INFO - [SHAP] Gráficos SHAP registrados en MLflow bajo 'shap'.
+[2025-12-04, 21:48:21 UTC] {logging_mixin.py:188} WARNING - 2025/12/04 21:48:21 WARNING mlflow.models.model: Model logged without a signature and input example. Please set `input_example` parameter when logging the model to auto infer the model signature.
+[2025-12-04, 21:48:21 UTC] {logging_mixin.py:188} INFO - [MLflow] Modelo sklearn registrado en MLflow bajo artifact_path='xgb_pipeline'.
+[2025-12-04, 21:48:21 UTC] {logging_mixin.py:188} WARNING - 2025/12/04 21:48:21 INFO mlflow.tracking._tracking_service.client: 🏃 View run xgb_prod at: http://mlflow:5000/#/experiments/4/runs/0f51908283fd4afd850e76bd0b155373.
+[2025-12-04, 21:48:21 UTC] {logging_mixin.py:188} WARNING - 2025/12/04 21:48:21 INFO mlflow.tracking._tracking_service.client: 🧪 View experiment at: http://mlflow:5000/#/experiments/4.
+[2025-12-04, 21:48:22 UTC] {logging_mixin.py:188} INFO - [retrain_model_task]  Modelo guardado en /opt/***/models/xgb_best_model.pkl
+[2025-12-04, 21:48:22 UTC] {logging_mixin.py:188} INFO - [retrain_model_task]  Threshold óptimo: 0.8000
+[2025-12-04, 21:48:23 UTC] {logging_mixin.py:188} INFO - Predicciones guardadas en /opt/***/artifacts/predictions/predicciones_test.parquet
+[2025-12-04, 21:48:23 UTC] {logging_mixin.py:188} INFO - [retrain_model_task]  Predicciones test en /opt/***/artifacts/predictions/predicciones_test.parquet
+[2025-12-04, 21:48:23 UTC] {python.py:201} INFO - Done. Returned value was: None
+[2025-12-04, 21:48:23 UTC] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sodai_xgb_pipeline, task_id=retrain_model_task, execution_date=20251204T211006, start_date=20251204T211433, end_date=20251204T214823
+[2025-12-04, 21:48:26 UTC] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-04, 21:48:28 UTC] {taskinstance.py:3281} INFO - 0 downstream tasks scheduled from follow-on schedule check
+
+6. *skip_retrain*
+*** Could not read served logs: Request URL is missing an 'http://' or 'https://' protocol.
+
+
+7. *predict_next_week_task*
+b6c371dd2e5a
+*** Found local files:
+***   * /opt/airflow/logs/dag_id=sodai_xgb_pipeline/run_id=manual__2025-12-04T21:10:06.268744+00:00/task_id=predict_next_week_task/attempt=1.log
+[2025-12-04, 21:48:37 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.predict_next_week_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:48:37 UTC] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: sodai_xgb_pipeline.predict_next_week_task manual__2025-12-04T21:10:06.268744+00:00 [queued]>
+[2025-12-04, 21:48:37 UTC] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-12-04, 21:48:37 UTC] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): predict_next_week_task> on 2025-12-04 21:10:06.268744+00:00
+[2025-12-04, 21:48:37 UTC] {standard_task_runner.py:60} INFO - Started process 1590 to run task
+[2025-12-04, 21:48:37 UTC] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'sodai_xgb_pipeline', 'predict_next_week_task', 'manual__2025-12-04T21:10:06.268744+00:00', '--job-id', '138', '--raw', '--subdir', 'DAGS_FOLDER/sodai_xgb_pipeline_dag.py', '--cfg-path', '/tmp/tmpn6y2vkba']
+[2025-12-04, 21:48:37 UTC] {standard_task_runner.py:88} INFO - Job 138: Subtask predict_next_week_task
+[2025-12-04, 21:48:38 UTC] {task_command.py:423} INFO - Running <TaskInstance: sodai_xgb_pipeline.predict_next_week_task manual__2025-12-04T21:10:06.268744+00:00 [running]> on host b6c371dd2e5a
+[2025-12-04, 21:48:38 UTC] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='sodai_drinkers' AIRFLOW_CTX_DAG_ID='sodai_xgb_pipeline' AIRFLOW_CTX_TASK_ID='predict_next_week_task' AIRFLOW_CTX_EXECUTION_DATE='2025-12-04T21:10:06.268744+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-12-04T21:10:06.268744+00:00'
+[2025-12-04, 21:48:45 UTC] {logging_mixin.py:188} INFO - [predict_next_week_task]  Modelo cargado. Umbral: 0.8000
+[2025-12-04, 21:48:45 UTC] {logging_mixin.py:188} INFO - [predict_next_week_task]  Archivos nueva semana: ['transacciones_1.parquet', 'transacciones_2.parquet', 'transacciones_3.parquet']
+[2025-12-04, 21:48:45 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Cargado: transacciones_1.parquet con 3,942 registros
+[2025-12-04, 21:48:45 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Cargado: transacciones_2.parquet con 6,531 registros
+[2025-12-04, 21:48:45 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Cargado: transacciones_3.parquet con 6,232 registros
+[2025-12-04, 21:48:45 UTC] {logging_mixin.py:188} INFO -   [load_raw_data] Total transacciones: 271,641 registros
+[2025-12-04, 21:51:41 UTC] {logging_mixin.py:188} INFO - [predict_next_week_task]  Candidatos t+2 construidos. Shape: (172845, 22)
+[2025-12-04, 21:51:42 UTC] {logging_mixin.py:188} INFO - [predict_next_week_task]  Predicciones t+2 en /opt/***/artifacts/predictions/predicciones_finales.parquet
+[2025-12-04, 21:51:42 UTC] {logging_mixin.py:188} INFO - [predict_next_week_task] Muestra:
+  customer_id product_id  ... pred_binaria rank_cliente
+0      123150      10652  ...            0            4
+1      123150      10790  ...            0           14
+2      123150      10808  ...            0           17
+3      123150      11262  ...            1            2
+4      123150      11490  ...            0           16
+5      123150       1206  ...            0           21
+6      123150        124  ...            0           11
+7      123150       1304  ...            1            1
+8      123150       1370  ...            1            1
+9      123150       1372  ...            0            6
+[10 rows x 25 columns]
+[2025-12-04, 21:51:42 UTC] {logging_mixin.py:188} INFO - [predict_next_week_task] Predicciones positivas: 10,924 de 172,845 (6.32%)
+[2025-12-04, 21:51:42 UTC] {python.py:201} INFO - Done. Returned value was: None
+[2025-12-04, 21:51:42 UTC] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=sodai_xgb_pipeline, task_id=predict_next_week_task, execution_date=20251204T211006, start_date=20251204T214837, end_date=20251204T215142
+[2025-12-04, 21:51:43 UTC] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-12-04, 21:51:43 UTC] {taskinstance.py:3281} INFO - 0 downstream tasks scheduled from follow-on schedule check
