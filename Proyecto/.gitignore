@@ -1,0 +1,10 @@
+# === SOLO runtime de Airflow y logs ===
+
+# Logs de Airflow de la entrega 2
+entrega_2/airflow/logs/
+
+# (por si acaso existen estos otros)
+airflow_home/
+airflow_home/logs/
+Laboratorios/Laboratorio_9/logs/
+
